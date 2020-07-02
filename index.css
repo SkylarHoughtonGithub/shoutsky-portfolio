@@ -6,14 +6,6 @@ color: #EDF3EA;
 font-size: 30px;
 }
 
-h1 { 
-color: #55FF00;
-position: absolute;
-text-align: left;
-padding: 0 0 0 0;
-font-weight: bold;
-}
-
 body {
 background-color: #FFFFFF;
 color: #55FF00;
@@ -21,4 +13,11 @@ font-family: Arial, sans-serif;
 margin: 0 4px 0 0;
 border: 6px solid;
 background-image: url('smart_chimp.jpg');
+}
+
+.fixed-footer {
+padding: 20x;
+text-align: left;
+color: #EDF3EA;
+font-size: 10px;
 }
