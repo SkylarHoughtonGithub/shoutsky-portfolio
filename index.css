@@ -1,3 +1,11 @@
+.header {
+padding: 60x;
+text-align: center;
+background-color: black;
+color: blanchedalmond;
+font-size: 30px;
+}
+
 h1 { color: green;
 position: absolute;
 text-align: left;
