@@ -3,7 +3,7 @@ padding: 1px;
 position: -webkit-sticky;
 position: sticky;
 top: 0;
-text-align: center;
+text-align: left;
 background-color: #000000;
 color: #EDF3EA;
 font-family: "Lucida Console", Monaco, monospace;
@@ -15,7 +15,7 @@ body {
 background-color: #000000;
 color: #EDF3EA;
 font-family: "Lucida Console", Monaco, monospace;
-font-size: 400px;
+font-size: 200px;
 background-image: url('smart_chimp.jpg');
 height: 100%;
 background-position: center;
@@ -24,7 +24,7 @@ background-size: cover;
 
 .fixed-footer {
 position: relative;
-bottom: 1;
+bottom: 0;
 padding: 5px;
 text-align: left;
 background-color: #000000;
