@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jankee Munkey</title>
+    <link>/</link>
+    <description>Recent content on Jankee Munkey</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 10 Oct 2020 13:58:38 -0500</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Projectse</title>
+      <link>/projects/test2/</link>
+      <pubDate>Sat, 10 Oct 2020 13:58:38 -0500</pubDate>
+      
+      <guid>/projects/test2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>test</title>
+      <link>/projects/test/</link>
+      <pubDate>Sat, 10 Oct 2020 13:58:38 -0500</pubDate>
+      
+      <guid>/projects/test/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>/about/</link>
+      <pubDate>Sat, 10 Oct 2020 13:39:14 -0500</pubDate>
+      
+      <guid>/about/</guid>
+      <description>I am Jank. Jank the Munkey. I go by that on the web, but my real name is Skylar Houghton. I have a passion for IT and found that automation is where i really excel.
+Automation with a focus on security. Locking things down and ensuring things are secure on the web are a niche i feel at home with.
+I started this project to show others things that I have learned in the process and the legacy I have with them as well.</description>
+    </item>
+    
+  </channel>
+</rss>
