@@ -6,14 +6,14 @@
     <description>Recent content in -value_1 -value_2 on Jankee Munkey</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 10 Oct 2020 13:58:38 -0500</lastBuildDate><atom:link href="/tags/value_1-value_2/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 15 Nov 2020 13:58:38 -0500</lastBuildDate><atom:link href="/tags/value_1-value_2/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Projectse</title>
-      <link>/projects/test2/</link>
-      <pubDate>Sat, 10 Oct 2020 13:58:38 -0500</pubDate>
+      <title>Ansible Core</title>
+      <link>/projects/ansible_core/</link>
+      <pubDate>Sun, 15 Nov 2020 13:58:38 -0500</pubDate>
       
-      <guid>/projects/test2/</guid>
-      <description></description>
+      <guid>/projects/ansible_core/</guid>
+      <description>The moment I learned the true power of Ansible in any form was the thresehold I would say is the absolute starting point of the Intermediate phase of my career. I had heard of Ansible, Chef and Salt on Reddit but never thought important. After all, one machine in a vacuum hardly seems like something that needs help containing. When I finally got in a production environment and needed to be able to have full control of my fleet is when I started taking it serious.</description>
     </item>
     
   </channel>

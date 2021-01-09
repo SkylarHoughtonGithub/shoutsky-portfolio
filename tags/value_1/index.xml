@@ -6,14 +6,24 @@
     <description>Recent content in -value_1 on Jankee Munkey</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 10 Oct 2020 13:58:38 -0500</lastBuildDate><atom:link href="/tags/value_1/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 21 Dec 2020 16:58:38 -0500</lastBuildDate><atom:link href="/tags/value_1/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>test</title>
-      <link>/projects/test/</link>
+      <title>Auditd Explained</title>
+      <link>/projects/auditd_explained/</link>
+      <pubDate>Mon, 21 Dec 2020 16:58:38 -0500</pubDate>
+      
+      <guid>/projects/auditd_explained/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Network Bound Disk Encryption (NBDE)</title>
+      <link>/projects/network_bound_disk_encryption/</link>
       <pubDate>Sat, 10 Oct 2020 13:58:38 -0500</pubDate>
       
-      <guid>/projects/test/</guid>
-      <description></description>
+      <guid>/projects/network_bound_disk_encryption/</guid>
+      <description>Imagine you are in an environment where full disk encryption is necessary at all times. Imagine that you also must deliver your environment to a remote location akin to being an on-prem managed server.
+Now Imagine All the previous constraints need to be fulfilled without user interaction. After all one simply cannot input the disk encryption key everytime the system boots. It must be able to do it on its own under certain circumstances and know not to unlock in others.</description>
     </item>
     
   </channel>
