@@ -2,26 +2,26 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Jankee Munkey</title>
-    <link>/tags/</link>
+    <link>//localhost:1313/tags/</link>
     <description>Recent content in Tags on Jankee Munkey</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Mon, 21 Dec 2020 16:58:38 -0500</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 10 Feb 2021 13:58:38 -0500</lastBuildDate><atom:link href="//localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>-value_1</title>
-      <link>/tags/value_1/</link>
-      <pubDate>Mon, 21 Dec 2020 16:58:38 -0500</pubDate>
+      <title>-ansible</title>
+      <link>//localhost:1313/tags/ansible/</link>
+      <pubDate>Wed, 10 Feb 2021 13:58:38 -0500</pubDate>
       
-      <guid>/tags/value_1/</guid>
+      <guid>//localhost:1313/tags/ansible/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>-value_1 -value_2</title>
-      <link>/tags/value_1-value_2/</link>
-      <pubDate>Sun, 15 Nov 2020 13:58:38 -0500</pubDate>
+      <title>-value_1</title>
+      <link>//localhost:1313/tags/value_1/</link>
+      <pubDate>Sat, 10 Oct 2020 13:58:38 -0500</pubDate>
       
-      <guid>/tags/value_1-value_2/</guid>
+      <guid>//localhost:1313/tags/value_1/</guid>
       <description></description>
     </item>
     
