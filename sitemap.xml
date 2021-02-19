@@ -3,56 +3,56 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>//localhost:1313/tags/ansible/</loc>
+    <loc>https://jankeemunkey.com:1313/tags/ansible/</loc>
     <lastmod>2021-02-10T13:58:38-05:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1313/projects/ansible_2/</loc>
+    <loc>https://jankeemunkey.com:1313/projects/ansible_2/</loc>
     <lastmod>2021-02-10T13:58:38-05:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1313/</loc>
+    <loc>https://jankeemunkey.com:1313/</loc>
     <lastmod>2021-02-10T13:58:38-05:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1313/tags/</loc>
+    <loc>https://jankeemunkey.com:1313/tags/</loc>
     <lastmod>2021-02-10T13:58:38-05:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1313/projects/ansible_1/</loc>
+    <loc>https://jankeemunkey.com:1313/projects/ansible_1/</loc>
     <lastmod>2020-11-15T13:58:38-05:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1313/tags/value_1/</loc>
+    <loc>https://jankeemunkey.com:1313/tags/value_1/</loc>
     <lastmod>2020-10-10T13:58:38-05:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1313/projects/nbde/</loc>
+    <loc>https://jankeemunkey.com:1313/projects/nbde/</loc>
     <lastmod>2020-10-10T13:58:38-05:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1313/projects/</loc>
+    <loc>https://jankeemunkey.com:1313/projects/</loc>
     <lastmod>2020-10-10T13:58:38-05:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1313/about/</loc>
+    <loc>https://jankeemunkey.com:1313/about/</loc>
     <lastmod>2020-10-10T13:39:14-05:00</lastmod>
   </url>
   
   <url>
-    <loc>//localhost:1313/categories/</loc>
+    <loc>https://jankeemunkey.com:1313/categories/</loc>
   </url>
   
   <url>
-    <loc>//localhost:1313/series/</loc>
+    <loc>https://jankeemunkey.com:1313/series/</loc>
   </url>
   
 </urlset>
