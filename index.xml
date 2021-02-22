@@ -2,47 +2,47 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Jank&#39;s Homepage</title>
-    <link>https://jankeemunkey.com/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content on Jank&#39;s Homepage</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 10 Feb 2021 13:58:38 -0500</lastBuildDate><atom:link href="https://jankeemunkey.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 10 Feb 2021 13:58:38 -0500</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Ansible - The Server of all Servers Pt.2</title>
-      <link>https://jankeemunkey.com/projects/ansible_2/</link>
+      <link>http://localhost:1313/projects/ansible_2/</link>
       <pubDate>Wed, 10 Feb 2021 13:58:38 -0500</pubDate>
       
-      <guid>https://jankeemunkey.com/projects/ansible_2/</guid>
+      <guid>http://localhost:1313/projects/ansible_2/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Ansible - The Server of all Servers Pt.1</title>
-      <link>https://jankeemunkey.com/projects/ansible_1/</link>
+      <link>http://localhost:1313/projects/ansible_1/</link>
       <pubDate>Sun, 15 Nov 2020 13:58:38 -0500</pubDate>
       
-      <guid>https://jankeemunkey.com/projects/ansible_1/</guid>
+      <guid>http://localhost:1313/projects/ansible_1/</guid>
       <description>What is it It would be best if this was made into a series of articles as opposed to one behemoth that has all the information of Ansible. That way I can share my experiences and opinions on the software as well as the utilization methods along the way.
 The moment I learned the true power of Ansible in any form was the starting point of the Intermediate phase of my career.</description>
     </item>
     
     <item>
       <title>Network Bound Disk Encryption (NBDE)</title>
-      <link>https://jankeemunkey.com/projects/nbde/</link>
+      <link>http://localhost:1313/projects/nbde/</link>
       <pubDate>Sat, 10 Oct 2020 13:58:38 -0500</pubDate>
       
-      <guid>https://jankeemunkey.com/projects/nbde/</guid>
+      <guid>http://localhost:1313/projects/nbde/</guid>
       <description>Imagine you are in an environment where full disk encryption is necessary at all times. Imagine that you also must deliver your environment to a remote location akin to being an on-prem managed server.
 Now Imagine All the previous constraints need to be fulfilled without user interaction. After all one simply cannot input the disk encryption key everytime the system boots. It must be able to do it on its own under certain circumstances and know not to unlock in others.</description>
     </item>
     
     <item>
       <title>About Me &amp; Resume</title>
-      <link>https://jankeemunkey.com/resume/</link>
+      <link>http://localhost:1313/resume/</link>
       <pubDate>Sat, 10 Oct 2020 13:39:14 -0500</pubDate>
       
-      <guid>https://jankeemunkey.com/resume/</guid>
-      <description>By day I am Skylar. By night I am Jank. I&amp;rsquo;ve been obssessed with computers since I first seen one.
+      <guid>http://localhost:1313/resume/</guid>
+      <description>Resume Document By day I am Skylar. By night I am Jank. I&amp;rsquo;ve been obssessed with computers since I first seen one.
 Ive always had a drive thats made me go confront the next unknown and enjoy the ride.
 I have a deep passion for music, I enjoy video games, and am a big self study advocate.
 Out of high school I attended a local technical college that gave me my first IT and systems administration education.</description>
