@@ -19,9 +19,10 @@ jobs:
 
       - name: Checkout submodules
         run: git submodule update --init --recursive
-
       - name: test 
         run: git submodule
+      - name: debug themes
+        run: ls themes
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
@@ -29,8 +30,6 @@ jobs:
           hugo-version: '0.119.0'
           extended: true
 
-      - name: debug themes
-        run: ls themes
       - name: Build
         run: hugo --minify
 
@@ -39,4 +38,4 @@ jobs:
         if: github.ref == 'refs/heads/master'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: ./
