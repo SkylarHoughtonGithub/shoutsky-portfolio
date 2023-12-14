@@ -1,6 +1,7 @@
 baseURL = 'https://shoutsky.com/'
 languageCode = 'en-us'
 title = 'Skylar Houghton'
+themesDir = "themes"
 theme = 'hugo-theme-relearn'
 
 [[module.imports]]
