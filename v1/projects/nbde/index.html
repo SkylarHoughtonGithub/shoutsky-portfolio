@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head><script src="/livereload.js?port=1313&amp;mindelay=10&amp;v=2" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Language" content="en">
+
+    <meta name="author" content="Skylar Houghton, Jankee Munkey">
+    <meta name="description" content="Imagine you are in an environment where full disk encryption is necessary at all times. Imagine that you also must deliver your environment to a remote location akin to being an on-prem managed server.
+Now Imagine All the previous constraints need to be fulfilled without user interaction. After all one simply cannot input the disk encryption key everytime the system boots. It must be able to do it on its own under certain circumstances and know not to unlock in others.">
+    <meta name="keywords" content="blog,developer,personal">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Network Bound Disk Encryption (NBDE)"/>
+<meta name="twitter:description" content="Imagine you are in an environment where full disk encryption is necessary at all times. Imagine that you also must deliver your environment to a remote location akin to being an on-prem managed server.
+Now Imagine All the previous constraints need to be fulfilled without user interaction. After all one simply cannot input the disk encryption key everytime the system boots. It must be able to do it on its own under certain circumstances and know not to unlock in others."/>
+
+    <meta property="og:title" content="Network Bound Disk Encryption (NBDE)" />
+<meta property="og:description" content="Imagine you are in an environment where full disk encryption is necessary at all times. Imagine that you also must deliver your environment to a remote location akin to being an on-prem managed server.
+Now Imagine All the previous constraints need to be fulfilled without user interaction. After all one simply cannot input the disk encryption key everytime the system boots. It must be able to do it on its own under certain circumstances and know not to unlock in others." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/projects/nbde/" />
+<meta property="article:published_time" content="2020-10-10T13:58:38-05:00" />
+<meta property="article:modified_time" content="2020-10-10T13:58:38-05:00" />
+
+
+    <title>
+  Network Bound Disk Encryption (NBDE) · Jank&#39;s Homepage
+</title>
+
+    
+      <link rel="canonical" href="http://localhost:1313/projects/nbde/">
+    
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.1.7/css/fork-awesome.min.css" integrity="sha256-gsmEoJAws/Kd3CjuOQzLie5Q3yshhvmo7YNtBG7aaEY=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin="anonymous" />
+
+    
+      
+      
+      <link rel="stylesheet" href="/css/coder.css" media="screen">
+    
+
+    
+
+    
+      
+        
+        
+        <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+      
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    
+      <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    
+
+    <meta name="generator" content="Hugo 0.76.3" />
+  </head>
+
+  
+  
+    
+  
+  <body class="colorscheme-auto"
+        onload=" twemoji.parse(document.body); "
+  >
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      Jank&#39;s Homepage
+    </a>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container page">
+  <article>
+    <header>
+      <h1>Network Bound Disk Encryption (NBDE)</h1>
+    </header>
+
+    <p>Imagine you are in an environment where full disk encryption is necessary at all times. Imagine that you also must deliver your environment to a remote location akin to being an on-prem managed server.</p>
+<h1 id="now-imagine">Now Imagine</h1>
+<p>All the previous constraints need to be fulfilled without user interaction. After all one simply cannot input the disk encryption key everytime the system boots. It must be able to do it on its own under certain circumstances and know not to unlock in others.</p>
+<p>That is how I was exposed to LUKS for the first time. LUKS is a disk encryption specification intended to follow the TKS1 secure key setup scheme. More can be read on this <a href="https://clemens.endorphin.org/TKS1-draft.pdf">here</a>. It essentially is the Linux accepted encryption method.</p>
+<p>LUKS is only a portion of the puzzle in this scenario. This setup works if you are willing to accept manually getting the server to start everytime. So we need to include a framework that is the condition checker and obtain the decryption key automatically.</p>
+<p><a href="https://www.redhat.com/en/blog/easier-way-manage-disk-decryption-boot-red-hat-enterprise-linux-75-using-nbde">Clevis and Tang</a> is the answer..</p>
+<h1 id="how-does-it-work">How does it work?</h1>
+<p>Essentially, the Clevis and Tang setup is an automation framework built around the LUKS disk encryption system. It allows a local service pre-boot networking capabilities; so that the server, while in a vulnerable state in the boot process, can contact a remote resource to verify that it is actually clear to continue the boot process. If it fails to communicate to the remote resource, it assumes it cannot continue to boot.</p>
+<p>One thing that must be cleared up now is:
+Clevis - Client-side
+Tang - Server-side</p>
+<p><img src="https://www.redhat.com/cms/managed-files/styles/wysiwyg_full_width/s3/2018/04/clevis-tang-arch.png?itok=rchb32Sp" alt="Clevis-Tang"></p>
+<p>The heavy side of the Nuances with this setup is the Clevis portion. Tang just needs to offer the key reliably, and be rotatable. Which it is. It doesnt store any identifiable information to the client. See <a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/security_hardening/configuring-automated-unlocking-of-encrypted-volumes-using-policy-based-decryption_security-hardening">Tang Server Page</a> for more details.</p>
+<p>Both Tang and Clevis leverage Jose as a means of verifying the payload Tang offers is a legitimate payload Clevis can take as Input for decryption. See the <a href="https://github.com/latchset/jose">Jose Github Page</a> for more details.</p>
+<h1 id="tang-server-setup">Tang Server Setup</h1>
+<h1 id="clevis-client-setup">Clevis Client Setup</h1>
+<p>Admittedly, I have spent way more time in the client side of this configuration than any other portion. This was my first true test in IT and, for me in particular, hold this to be my bread and butter as the defining factor of my career. Automation and Security.</p>
+<p><a href="https://github.com/latchset/clevis">Clevis</a> for the curious reader. This particular Github page captured more attention from me than most.</p>
+<p>Clevis works by being a means for the local host to reach out to the remote resource for a payload to begin the decryption process. What makes the Tang-Clevis relationship unique is it does not require a key escrow to validate the exchange process. This is what makes this setup different than SSL. Whereas SSL requires a certificate to be the public key that a connection requests as part of the validation, this system creates a public-private key connection between the private key that encrypts the LUKS partition, and the public payload tang offers to validate the boot process.</p>
+<p>After partition binding, Clevis determines the secure boot channel at system startup. What it does is enables pre-boot networking for the server, and attempts to reach out to a pre-configured payload address to see if the public key can create a connection and let the decrypting process begin.</p>
+<p>To utilize clevis to bind to a tang payload, a disk must be pre encrypted with a LUKS framework. This is because clevis utilizes luksmeta headers to determine key and payload details.</p>
+<p>To bind a LUKS partition to Tang with the Clevis framework, run a command similar to this:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">clevis luks bind -d /dev/sda tang &#39;{&#34;url&#34;:&#34;...}&#39;
+
+The advertisement contains the following signing keys:
+
+_OsIk0T-E2l6qjfdDiwVmidoZjA
+
+Do you wish to trust these keys? [ynYN] y
+You are about to initialize a LUKS device for metadata storage.
+Attempting to initialize it may result in data loss if data was
+already written into the LUKS header gap in a different format.
+A backup is advised before initialization is performed.
+
+Do you wish to initialize /dev/sda? [yn] y
+Enter existing LUKS password:
+</code></pre></div><p>Of course, url in this context must be either be a FQDN or resolveable hostname of the Tang server, or IP address. This caveat means that a VPN may be required for systems introduced into production at a remote location, or the system must exist on a LAN that can access the Tang server via private network means. This applies to clients in any environment, on-prem, or cloud. I suppose you could advertise Tang to the web, but you then dont fulfill the means of pre boot check requirements needing fulfilled. In a hijacked scenario, the client would just need to be connected to the internet to boot.</p>
+<p>Now that the binding is complete, the system must have services in place to perform the checks. These service must also have pre-boot capabilities, since the service performs the check to determine the OS is ready to continue the boot process.</p>
+<p>edit the <code>/etc/fstab</code> and <code>/etc/cryptab</code> files and locate the drives that have luks headers. the partitions with schemes similar to <code>/dev/mapper/secret</code> are luks partitions. If you have encrypted the root (/) partition with the luks/clevis/tang setup outlined here, that partition has to be declared in the file system table files previously outlined.</p>
+<p>The fstab and cryptab file should have the _netdev flags appended to the option sections of that partition in either table:</p>
+<p>Fstab example:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">/dev/mapper/secret      /secret                 ext4    _netdev,defaults        0 0
+</code></pre></div><p>Crypttab example:</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">secret  /dev/sdb1       none _netdev
+</code></pre></div><p>For the partitions that do not require pre-boot capabilities, they simple need the clevis service configured to autostart so that they can be unlocked as soon as the system init process begins.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">systemctl enable clevis-luks-askpass.path
+</code></pre></div><p>Thats it.</p>
+<p>Now the system needs to be restarted to test.</p>
+<h1 id="anticipation">Anticipation</h1>
+<p>Now the point of this whole Clevis business is so you dont have to worry about your server booting while also being protected from malicious sources. Learning this framework and getting familiar with it to the point of competent troubleshooting was an astounding feat. Countless hours sitting in front of a blinking LUKS screen asking for a passphrase. I had no idea what a functioning system was supposed to do but I needed this to work for a critical project. The moment I saw that dreaded blinking cursor flash once.. Then twice&hellip; and continued the CentOS boot process. I had to proclaim in joy because it was working.</p>
+<p>The second half of the journey was bound for even more struggle. I had to be prepared for this system I was learning on to boot in a remote client location. Because the fate of the server I was on was to be in a datacenter several hundred miles away, I had to be confident this system would work. After packing the system up and shipping it to the other side of the country, I waited for their onsite IT to turn the system on. When they finally did, it booted just fine. That feeling was the epitomy of perfection.</p>
+<p>If you haven&rsquo;t ever been there waiting for the system to boot on its own. Its an anticpation like no other. I sat at 15 or so blank, unresponsive prompts until it worked on its own. This is a powerful, unforgiving framework.</p>
+<p>But the moment it worked as expected, it changed everything. This works when you need it to and is entirely scriptable.</p>
+<h1 id="automating-the-automation-framework">Automating the Automation Framework</h1>
+<p>This system was used in the use case I was familiar in with for bare metal clients and a virtual server. I suppose a local vCenter, Hyper-V or Openstack environment, or a public AWS or Azure environment wouldnt have the need for an OS disk encryption system if the block storage in that infrastructure has encryption capabilities. But if you find yourself needing this type of encryption for any solution, you likely understand the need to scale deployments. Manually this process can consume the better part of a single day for one clients server.</p>
+<p>The first step is automating the bare metal portion of the solution.</p>
+<p><a href="https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/installation_guide/sect-kickstart-howto">Kickstart</a> is a method supported by Redhat for scripted provisioning.  The profile specifies which partitions need to have a LUKS wrapper, as well as the ones that do not. This was because this use case utilized 2 RAID arrays, sda was RAID1 and consisted of 2 SSDs, and sdb would be RAID6 or RAID10 depending on the server size. Due to this, it also needed to have the ability to pick one of several server sizes. The difference was the amount of CPU, memory and disk space on the server. It is designed to prompt you in the <code>%pre</code> section of the execution process, just before it hands off to the main section for the actual provisioning.</p>
+<p>Below is a kickstart profile I constructed for 1 touch installations on Dell r730xd systems.</p>
+<div class="highlight"><pre style="color:#e5e5e5;background-color:#000;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">#image is for install, not upgrade
+install
+
+# Keyboard layouts
+keyboard &#39;us&#39;
+
+# System language
+lang en_US
+
+# System authorization information
+auth  --useshadow  --enablemd5
+
+# Use CDROM installation media
+cdrom
+
+# Use text mode install
+text
+firstboot --enable
+
+# SELinux configuration
+selinux --disabled
+
+# Do not configure the X Window System
+skipx
+
+# Firewall configuration
+firewall --disabled
+
+# Network information
+%include /tmp/network.ks
+
+# System timezone
+timezone America/Chicago
+
+#accept eula prompt
+eula --agreed
+
+#configure root password
+%include /tmp/root.ks
+
+# System bootloader configuration
+bootloader --location=mbr
+
+# Clear the Master Boot Record
+zerombr
+
+# Partition clearing information
+clearpart --all --initlabel
+
+# Disk partitioning information
+%include /tmp/part.ks
+
+# Halt for user input after installation is complete
+halt
+
+#########################################################################################################
+
+%pre --interpreter=/bin/bash
+#change Virtual terminal to accept user input
+exec &lt; /dev/tty6 &gt; /dev/tty6 2&gt; /dev/tty6
+chvt 6
+
+
+read -p  &#34;Enter hostname			: &#34; HOSTNAME
+read -p -s &#34;Enter password			: &#34; ROOTPW
+read -p  -s &#34;Enter LUKS password	: &#34; LUKS
+sleep 1
+
+#Network Schema
+ip addr | grep -i broadcast | awk &#39;{ print $2}&#39; &gt; /tmp/interface
+sed -i &#39;s/:/\ /g&#39; /tmp/interface
+INTERFACE=&#39;head -n 1 /tmp/interface&#39;
+echo &#34;network --bootproto dhcp  --device $INTERFACE --noipv6 --activate --onboot=on  &gt; /tmp/network.ks
+echo &#34;network --hostname=$HOSTNAME&#34; &gt;&gt; /tmp/network.ks
+
+#Root User Configuration
+rootpw $ROOTPW &gt; /tmp/root.ks
+
+#LUKS Configuration
+$LUKS &gt; /tmp/luks.ks
+
+#Partitioning Scheme based on Mod type
+function Partition ()
+{
+    read -r -p &#34;Select your server type [regular/large] : &#34; MOD
+    case $MOD in
+        regular)
+            echo &#34;part /boot --ondisk=sda --fstype=&#34;ext4&#34; --size=512&#34; &gt; /tmp/part.ks
+			echo &#34;part /boot/efi --ondisk=sda --size=512&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part / --ondisk=sda --fstype=&#34;ext4&#34; --size=grow --encrypted&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part swap --ondisk=sda --size=12288 --encrypted&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part /tmp --ondisk=sda --fstype=&#34;ext4&#34; --size=10240 --encrypted&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part /home --ondisk=sda --fstype=&#34;ext4&#34; --size=20480 --encrypted&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part /var --ondisk=sda --fstype=&#34;ext4&#34; --size=30720 --encrypted&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part /var/log/audit --ondisk=sda --fstype=&#34;ext4&#34; --size=10240 --encrypted&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part /data/path1 --ondisk=sdb --fstype=&#34;ext4&#34; --size=1382400&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part /data/path2 --ondisk=sdb --fstype=&#34;ext4&#34; --size=1382400&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part /data/path3 --ondisk=sdb --fstype=&#34;ext4&#34; --grow&#34; &gt;&gt; /tmp/part.ks
+			echo -e &#34;Configured as regular&#34;;;
+        large)
+            echo &#34;part /boot --ondisk=sda --fstype=&#34;ext4&#34; --size=512&#34; &gt; /tmp/part.ks
+			echo &#34;part /boot/efi --ondisk=sda --size=512&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part / --ondisk=sda --fstype=&#34;ext4&#34; --size=grow --encrypted&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part swap --ondisk=sda --size=12288 --encrypted&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part /tmp --ondisk=sda --fstype=&#34;ext4&#34; --size=10240 --encrypted&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part /home --ondisk=sda --fstype=&#34;ext4&#34; --size=20480 --encrypted&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part /var --ondisk=sda --fstype=&#34;ext4&#34; --size=30720 --encrypted&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part /var/log/audit --ondisk=sda --fstype=&#34;ext4&#34; --size=10240 --encrypted&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part /data/path1 --ondisk=sdb --fstype=&#34;ext4&#34; --size=1894400&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part /data/path2 --ondisk=sdb --fstype=&#34;ext4&#34; --size=1894400&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part /data/path3 --ondisk=sdb --fstype=&#34;ext4&#34; --size=1894400&#34; &gt;&gt; /tmp/part.ks
+			echo &#34;part /data/path4 --ondisk=sdb --fstype=&#34;ext4&#34; --grow&#34; &gt;&gt; /tmp/part.ks
+			echo -e &#34;Configured as Large&#34;;;
+        *)
+            echo &#34;Invalid Option&#34;
+            Partition
+            ;;
+    esac
+}
+Partition
+
+
+chvt 1
+exec &lt; /dev/tty1 &gt; /dev/tty1 2&gt; /dev/tty1
+%end
+
+#####################################################################################################################################################
+</code></pre></div><p>What I did here essentially is tell the baremetal to boot in either 2 ways, depending on the hardware of the system. It is my responsibility as the administrator to know what size I was dealing with and I only dealt with 2 sizes.</p>
+<p>You can use Kickstart to tell the baremetal machine a couple types of ways to access via kickstart. One way is with local boot media, where you have to edit grub and tell it where to point to with the kickstart file, and generate a custom ISO in the process.</p>
+<p>Another method is PXE booting with a system that will take your kickstart script in as input.</p>
+<p>I used the Kickstart and custom ISO process. See <a href="https://www.linuxsysadmins.com/create-a-custom-linux-iso/">How to make a custom ISO</a> to do this for your use case.</p>
+<p><a href="https://cobbler.github.io/">Cobbler</a> was chosen to leverage as a PXE boot server for the bare metal provisioning. Which in this case was most of the systems that would use this type of disc encryption.</p>
+<p>At this point you should have fully utilized the Network Bound Disc Encryption system. Good luck with other ventures.</p>
+
+  </article>
+</section>
+
+  
+
+      </div>
+
+      
+  <footer class="footer">
+    <section class="container">
+      
+        <p>This is just the beginning.</p>
+      
+      
+        ©
+        
+          2019 -
+        
+        2021
+         Skylar Houghton, Jankee Munkey 
+      
+      
+      
+        
+      
+    </section>
+  </footer>
+
+    </main>
+
+    
+      
+      <script src="/js/dark-mode.js"></script>
+    
+
+    
+
+    
+
+    <script>
+(function(f, a, t, h, o, m){
+	a[h]=a[h]||function(){
+		(a[h].q=a[h].q||[]).push(arguments)
+	};
+	o=f.createElement('script'),
+	m=f.getElementsByTagName('script')[0];
+	o.async=1; o.src=t; o.id='fathom-script';
+	m.parentNode.insertBefore(o,m)
+})(document, window, '//cdn.usefathom.com/tracker.js', 'fathom');
+fathom('set', 'siteId', 'JANKEEMUNKEY');
+fathom('trackPageview');
+</script>
+
+
+    <script async defer data-domain="jankeemunkey.com" src="https://https://plausible.io/js/plausible.js"></script>
+
+
+    <script data-goatcounter="https://code.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+
+  </body>
+
+</html>

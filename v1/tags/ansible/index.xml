@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>-ansible on Jank&#39;s Homepage</title>
+    <link>http://localhost:1313/tags/ansible/</link>
+    <description>Recent content in -ansible on Jank&#39;s Homepage</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 10 Feb 2021 13:58:38 -0500</lastBuildDate><atom:link href="http://localhost:1313/tags/ansible/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Ansible - The Server of all Servers Pt.2</title>
+      <link>http://localhost:1313/projects/ansible_2/</link>
+      <pubDate>Wed, 10 Feb 2021 13:58:38 -0500</pubDate>
+      
+      <guid>http://localhost:1313/projects/ansible_2/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ansible - The Server of all Servers Pt.1</title>
+      <link>http://localhost:1313/projects/ansible_1/</link>
+      <pubDate>Sun, 15 Nov 2020 13:58:38 -0500</pubDate>
+      
+      <guid>http://localhost:1313/projects/ansible_1/</guid>
+      <description>What is it It would be best if this was made into a series of articles as opposed to one behemoth that has all the information of Ansible. That way I can share my experiences and opinions on the software as well as the utilization methods along the way.
+The moment I learned the true power of Ansible in any form was the starting point of the Intermediate phase of my career.</description>
+    </item>
+    
+  </channel>
+</rss>

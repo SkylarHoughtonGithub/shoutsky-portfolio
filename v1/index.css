@@ -1,0 +1,35 @@
+.header {
+padding: 1px;
+position: -webkit-sticky;
+position: sticky;
+top: 0;
+text-align: left;
+background-color: #000000;
+color: #EDF3EA;
+font-family: "Lucida Console", Monaco, monospace;
+width: 100%;
+font-size: 40px;
+}
+
+body {
+background-color: #000000;
+color: #EDF3EA;
+font-family: "Lucida Console", Monaco, monospace;
+font-size: 200px;
+background-image: url('smart_chimp.jpg');
+height: 100%;
+background-position: center;
+background-size: cover;
+}
+
+.fixed-footer {
+position: relative;
+bottom: 0;
+padding: 5px;
+text-align: left;
+background-color: #000000;
+color: #EDF3EA;
+font-family: "Lucida Console", Monaco, monospace;
+width: 100%;
+font-size: 15px;
+}
