@@ -20,6 +20,8 @@ jobs:
       - name: Checkout submodules
         run: git submodule update --init --recursive
 
+      - run: git submodule
+
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
