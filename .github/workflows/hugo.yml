@@ -27,8 +27,7 @@ jobs:
           extended: true
 
       - name: debug themes
-        run: ls
-
+        run: ls themes
       - name: Build
         run: hugo --minify
 
