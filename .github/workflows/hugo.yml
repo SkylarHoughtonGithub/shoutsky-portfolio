@@ -23,11 +23,11 @@ jobs:
           hugo-version: '0.119.0'
           # extended: true
 
-      - name: Build
-        run: hugo --minify
-
       - name: debug themes
         run: ls themes
+
+      - name: Build
+        run: hugo --minify
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
