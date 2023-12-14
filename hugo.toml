@@ -1,4 +1,8 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://shoutsky.com/'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = 'Skylar Houghton'
 theme = 'hugo-theme-relearn'
+
+[[module.imports]]
+    path = "github.com/McShelby/hugo-theme-relearn"
+    disable=false
