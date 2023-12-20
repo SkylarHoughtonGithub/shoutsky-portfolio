@@ -1,4 +1,4 @@
-baseURL = 'https://shoutsky.com/'
+baseURL = 'https://skylarhoughtongithub.github.io/static-jank-site/'
 title = 'Skylar Houghton'
 themesDir = "themes"
 theme = 'hugo-theme-relearn'
