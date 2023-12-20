@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://shoutsky.com/docs/index.html</loc>
-    <lastmod>2023-12-19T20:55:43-06:00</lastmod>
-  </url>
-  <url>
     <loc>https://shoutsky.com/index.html</loc>
     <lastmod>2023-12-19T20:55:43-06:00</lastmod>
   </url>
   <url>
-    <loc>https://shoutsky.com/docs/test/index.html</loc>
-    <lastmod>2023-12-19T20:55:43-06:00</lastmod>
+    <loc>https://shoutsky.com/categories/index.html</loc>
   </url>
   <url>
-    <loc>https://shoutsky.com/categories/index.html</loc>
+    <loc>https://shoutsky.com/index.html</loc>
   </url>
   <url>
     <loc>https://shoutsky.com/tags/index.html</loc>

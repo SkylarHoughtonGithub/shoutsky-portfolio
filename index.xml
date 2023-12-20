@@ -6,14 +6,13 @@
     <description>Recent content on Skylar Houghton</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 19 Dec 2023 20:55:43 -0600</lastBuildDate>
     <atom:link href="https://shoutsky.com/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Docs</title>
-      <link>https://shoutsky.com/docs/index.html</link>
+      <title>Home</title>
+      <link>https://shoutsky.com/index.html</link>
       <pubDate>Tue, 19 Dec 2023 20:55:43 -0600</pubDate>
-      <guid>https://shoutsky.com/docs/index.html</guid>
-      <description></description>
+      <guid>https://shoutsky.com/index.html</guid>
+      <description>Test Page test e</description>
     </item>
   </channel>
 </rss>
