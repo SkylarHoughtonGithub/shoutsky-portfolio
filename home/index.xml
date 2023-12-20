@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Homes on Skylar Houghton</title>
+    <link>https://skylarhoughtongithub.github.io/static-jank-site/home/index.html</link>
+    <description>Recent content in Homes on Skylar Houghton</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 19 Dec 2023 20:55:43 -0600</lastBuildDate>
+    <atom:link href="https://skylarhoughtongithub.github.io/static-jank-site/home/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Article1</title>
+      <link>https://skylarhoughtongithub.github.io/static-jank-site/home/test2/index.html</link>
+      <pubDate>Tue, 19 Dec 2023 20:55:43 -0600</pubDate>
+      <guid>https://skylarhoughtongithub.github.io/static-jank-site/home/test2/index.html</guid>
+      <description>123123123123</description>
+    </item>
+  </channel>
+</rss>
