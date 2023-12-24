@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bios on Skylar Houghton</title>
+    <link>https://skylarhoughtongithub.github.io/static-jank-site/bio/index.html</link>
+    <description>Recent content in Bios on Skylar Houghton</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Sat, 23 Dec 2023 18:51:06 -0600</lastBuildDate>
+    <atom:link href="https://skylarhoughtongithub.github.io/static-jank-site/bio/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Who I Am</title>
+      <link>https://skylarhoughtongithub.github.io/static-jank-site/bio/who_i_am/index.html</link>
+      <pubDate>Sat, 23 Dec 2023 18:51:06 -0600</pubDate>
+      <guid>https://skylarhoughtongithub.github.io/static-jank-site/bio/who_i_am/index.html</guid>
+      <description>Nature. 🌱 Originally from the Wasatch mountains, ive lived in the Nashville Basin long enough to be considered native. Recently, I&amp;rsquo;ve found a new love in the serene embrace of the Blue Ridge Mountains but ultimately love any vast naturescape. The transition from the majestic Wasatch to the rolling beauty of the Blue Ridge has enriched my perspective, much like the diverse challenges of the DevOps realm.
+Strategy. ♟️ Beyond the world of payloads and packets, when not crafting seamless systems, you&amp;rsquo;ll catch me immersed in progressive metal symphonies, classical orchestrations, a strategy or platform game, a philospophical book, or spending time with my family.</description>
+    </item>
+    <item>
+      <title>What I Do</title>
+      <link>https://skylarhoughtongithub.github.io/static-jank-site/bio/what_i_do/index.html</link>
+      <pubDate>Tue, 19 Dec 2023 20:55:43 -0600</pubDate>
+      <guid>https://skylarhoughtongithub.github.io/static-jank-site/bio/what_i_do/index.html</guid>
+      <description>I asked chatgpt to help me with a description of my skills. I couldn&amp;rsquo;t have said it better myself:
+I thrive in the world of Linux like a honey badger in the wild. Automation is my middle name; I breathe life into code, making systems dance to the rhythm of efficiency. Leading teams is not just a skill, it&amp;#39;s my calling—think of me as the conductor of the DevOps orchestra, bringing harmony to chaos.</description>
+    </item>
+  </channel>
+</rss>
