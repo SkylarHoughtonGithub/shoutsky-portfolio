@@ -1,6 +1,0 @@
-baseURL = 'https://skylarhoughtongithub.github.io/static-jank-site/'
-title = 'Skylar Houghton'
-theme = 'hugo-theme-relearn'
-
-[outputs]
-home = [ "HTML", "RSS", "SEARCH"]
