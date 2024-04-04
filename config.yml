@@ -1,157 +1,162 @@
 ## Example Config file
-BaseURL: "https://skylarhoughtongithub.github.io/static-jank-site/"
+BaseURL: "https://skylarhoughtongithub.com/home/"
 theme: "terminalCV"
 title: "Skylar Houghton"
 
 params:
   description: "4s3ti cv terminal format"
-  prompt: "newuser@terminalcv"
-# promptColor: grey
-# promptSimbols: ":~$"
-# promptSimbolsColor: grey
-# startxLocation: https://example.com
+  prompt: "root@shoutsky"
+  promptColor: green
+  # promptSimbols: ":~$"
+  promptSimbolsColor: yellow
+  startxLocation: https://skylarhoughtongithub.com
 # hideSocialName: true
 # exitLocation: 'about:blank'
 # hidesource: true
-  greeting: | 
-    Welcome to my online resume
+  greeting: |
+    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    $$                                                                                                  $$
+    $$     $$\    $$\                 $$$$$$$\                                                $$\       $$
+    $$   $$$$$$\  $$ |                $$  __$$\                                               $$ |      $$
+    $$  $$  __$$\ $$ |  $$\ $$\   $$\ $$ |  $$ | $$$$$$\   $$$$$$\  $$$$$$\$$$$\   $$$$$$\  $$$$$$\     $$
+    $$  $$ /  \__|$$ | $$  |$$ |  $$ |$$$$$$$  |$$  __$$\ $$  __$$\ $$  _$$  _$$\ $$  __$$\ \_$$  _|    $$
+    $$  \$$$$$$\  $$$$$$  / $$ |  $$ |$$  ____/ $$ |  \__|$$ /  $$ |$$ / $$ / $$ |$$ /  $$ |  $$ |      $$
+    $$   \___ $$\ $$  _$$<  $$ |  $$ |$$ |      $$ |      $$ |  $$ |$$ | $$ | $$ |$$ |  $$ |  $$ |$$\   $$
+    $$  $$\  \$$ |$$ | \$$\ \$$$$$$$ |$$ |      $$ |      \$$$$$$  |$$ | $$ | $$ |$$$$$$$  |  \$$$$  |  $$
+    $$  \$$$$$$  |\__|  \__| \____$$ |\__|      \__|       \______/ \__| \__| \__|$$  ____/    \____/   $$
+    $$   \_$$  _/           $$\   $$ |                                            $$ |                  $$
+    $$     \ _/             \$$$$$$  |                                            $$ |                  $$
+    $$                       \______/                                             \__|                  $$
+    $$                                                                                                  $$
+    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    Welcome to my interactive github pages portfolio!
 
 
     Type 'help' for a list of available commands
-
-
+    Good Luck!
   whois: 
-      name: "John Doe"
-      profession: "Unknown"
-      location: "Somewhere"
-      email: "foo@someemail.com"
-      homelink: "https://myHomePage.com"
+      name: "Skylar Houghton"
+      profession: "DevOps Engineer"
+      homelink: "https://github.com/SkylarHoughtonGithub"
       description: |
-              Here you can write something catchy about yourself
+              I am an engineer driven by acceleration, that loves to orchestrate.
 
+              I believe in missions that change the world with freedom and open growth.
+              
+              Releases, Deployments, Monitoring, Maintenance. All lifecycle stages.
+              
+              Pipelines and Automation with a good plan
+
+              😉
+  
   social:
     ## IF you want to keep them aligned just add spaces
     - name: "github"
-      url: "          https://github.com"
-    - name: "facebook"
-      url: "        https://facebook.com"
-    - name: "myspace"
-      url: "         https://myspace.com"
-    - name: "hi5"
-      url: "             https://www.hi5.com"
-    - name: "instagram"
-      url: "       https://instagram.com"
-    - name: "Another social"
-      url: "  https://anothersocial.com"
-
+      url: "          https://github.com/SkylarHoughtonGithub"
+    - name: "linkedin"
+      url: "        https://www.linkedin.com/in/skylarhoughton/"
+  
   workexp:
-    - jobTitle: Job With Red Title
-      color: red
-      company: '-' 
-      location: somewhere
-      date: August 2010 - Present
-      description: Some description about this red title job
-
-    - jobTitle: Job with purple title
-      color: purple
-      company: '-'
-      location: somewhere elese
-      date: July 2000  - July 2010
-      description: Some description about this purple job
-
-    - jobTitle: Job with default color title
-      company: '-'
-      location: anywhere
-      date: July 2008 - 2010
-      description: Description about this default color job
-
+    - jobTitle: Senior Platform Engineer
+      color: green
+      company: intelerad 
+      location: remote
+      date: December 2022 - Present
+      description: Lead team with source control standards and serverless monitoring
+  
   education:
-   - courseName: Red Color training
-     color: red
-     date: June 2019 - July 2019
-     description: Descrption about red color trianing
-
-   - courseName: Default color training
-     date: Sept 2004 - Jun 2008
-     #description: There is no need for description
+   - courseName: WGU  B.S. - Cloud & Systems Engineering
+     color: white
+     date: November 2017 - July 2019
+     description: online self-paced course, focused on technologies such as aws,chef,vagrant,python,windows server/mssql server,cryptography and web development.
+   - courseName: TCAT  Technical Degree - Computer Information Systems
+     color: blue
+     date: Auguest 2016 - December 2017
+     description: instructor led lab environment with server,network and security fundamentals as well as coverage and hands on experience with firewalls,routers,switches and hypervisors.
 
   skills:
-    - name: Skill 1
-      percentage: 90
-      Description: you can add a description
-
-    - name: Skill 2
-      percentage: 30
-      #description: or you can leave it comented   
-
-    - name: Skill 3
-      color: blue
-      percentage: 50
-      description: Skill names can have colors too
+    - name: Linux
+      color: green
+      percentage: 75
+    - name: AWS
+      color: orange
+      percentage: 55    
+    - name: Software Engineering
+      color: purple
+      percentage: 40
+    - name: CICD
+      color: yellow
+      percentage: 40
+    - name: Networking
+      color: red
+      percentage: 40
 
   softskills:
-    - name: SoftSkill 1
+    - name: Leadership
       color: red
-      percentage: 80
-      #description:
-
-    - name:  SoftSkill 2
-      #color: 
-      percentage: 90
-      description: Description
-
-  languages:
-    - name: English
-      color: Blue
+      percentage: 60  
+    - name: Negotiation
+      color: orange 
       percentage: 50
-      #description: 
-
-    - name: Gibberish
-      percentage: 100
-      description: pasghettipigglywiggly
-
-
-  projects:
-    - title: Project Red
-      color: red
-      date: since 2019
-      link: https://example.com
-      description: Describing red stuff
-
-    - title: Project Blue
+    - name: Documentation
       color: blue
-      date: since 2016
-      link: https://example.com/blue
-      #description: nothing to describe
+      percentage: 70
+  
+  languages:
+    - name: Python
+      color: green
+      percentage: 50
+    - name: Golang
+      percentage: 30
+    - name: javascript
+      percentage: 15
+    - name: html/css
+      percentage: 40
+    - name: Bash
+      percentage: 85
+    - name: PowerShell
+      percentage: 40
 
-    - title: Project Default
-      date: Since 2017
-      link: https://example.com/default
-      #description: not there either
+  # projects:
+  #   - title: POTD Web App
+  #     color: green
+  #     link: https://example.com
+  #     description: Describing red stuff
+
+  #   - title: Project Blue
+  #     color: blue
+  #     date: since 2016
+  #     link: https://example.com/blue
+  #     #description: nothing to describe
+
+  #   - title: Project Default
+  #     date: Since 2017
+  #     link: https://example.com/default
+  #     #description: not there either
 
   certifications:
-  - certName: Example Cert
-    company: Example Certifying Company
-    date: Date of Completion
-    #description: Lorem Ipsum
+  - certName: RHCSA
+    date: 2022
   
   misc: 
     #commandName: newcommand
-    title: "This Section can have a different command name"
-    titleColor: teal
-    content: |
-          Here the title and the content can have different colors
-          The content can be multi
+    # title: "This Section can have a different command name"
+    # titleColor: teal
+    # content: |
+    #       Here the title and the content can have different colors
+    #       The content can be multi
           
-          line
+    #       line
 
-          And spaces       will be respected as well
-          This section will have the default command: misc
-          but you can name it something else with the property
-          commandName: <String>
-          Give it a shot and try and uncomment the line 
-          commandName: newcommand
-          now instead of misc you can execute the newcommand for this section
-          Auto completion will know it too! :D 
+    #       And spaces       will be respected as well
+    #       This section will have the default command: misc
+    #       but you can name it something else with the property
+    #       commandName: <String>
+    #       Give it a shot and try and uncomment the line 
+    #       commandName: newcommand
+    #       now instead of misc you can execute the newcommand for this section
+    #       Auto completion will know it too! :D 
 
-    contentColor: orange
+    # contentColor: orange
