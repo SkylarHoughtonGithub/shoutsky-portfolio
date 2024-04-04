@@ -1,6 +1,7 @@
 ## Example Config file
 BaseURL: "https://skylarhoughtongithub.com/home/"
 theme: "terminalCV"
+themesDir: "themes"
 title: "Skylar Houghton"
 
 params:
