@@ -4,14 +4,13 @@ theme: "terminalCV"
 title: "Skylar Houghton"
 
 params:
-  description: "4s3ti cv terminal format"
   prompt: "root@shoutsky"
   promptColor: green
   # promptSimbols: ":~$"
   promptSimbolsColor: yellow
   startxLocation: https://skylarhoughtongithub.com
 # hideSocialName: true
-# exitLocation: 'about:blank'
+  exitLocation: 'about:blank'
 # hidesource: true
   greeting: |
     $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
