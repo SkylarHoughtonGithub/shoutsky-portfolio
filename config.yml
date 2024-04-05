@@ -41,14 +41,22 @@ params:
       profession: "DevOps Engineer"
       homelink: "https://github.com/SkylarHoughtonGithub"
       description: |
-              I am an engineer driven by acceleration, that loves to orchestrate.
-
+              I am a development driven engineer. I love to orchestrate chaos.
+              Reducing effort, giving purpose to toil, automating the boring things.
               I believe in missions that change the world with freedom and open growth.
               
-              Releases, Deployments, Monitoring, Maintenance. All lifecycle stages.
-              
-              Pipelines and Automation with a good plan
+              I love the Platforming and SRE functions.   
+              Deployments, Maintenance, Monitoring.
 
+              Incremental improvements.
+                                        One less click. 
+              Centralized command and control. 
+                                        Immutability is a must. 
+              Good design and color scheme. 
+                                        Less is more.
+              
+              All lifecycle stages also require a good leader.
+              
               😉
   
   social:
@@ -137,8 +145,13 @@ params:
   #     #description: not there either
 
   certifications:
+  - certName: Certifications
+  - certName: Terraform Associate
   - certName: RHCSA
-    date: 2022
+  - certName: AWS SysOps Associate
+  - certName: LPIC-1- System Administrator
+  - certName: CIW Web Development Associate
+  - certName: ITILv3
   
   misc: 
     #commandName: newcommand
