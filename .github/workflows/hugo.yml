@@ -26,7 +26,8 @@ jobs:
           curl -L -o /tmp/hugo.tar.gz 'https://github.com/gohugoio/hugo/releases/download/v0.120.4/hugo_extended_0.120.4_linux-amd64.tar.gz'
           tar -C ${RUNNER_TEMP} -zxvf /tmp/hugo.tar.gz hugo
 
-      - run: ls themes    
+      - run: git submodule add https://github.com/4s3ti/terminalcv.git themes/terminalcv
+
       - name: Build
         run: ${RUNNER_TEMP}/hugo
 
