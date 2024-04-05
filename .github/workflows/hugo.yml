@@ -27,6 +27,10 @@ jobs:
           tar -C ${RUNNER_TEMP} -zxvf /tmp/hugo.tar.gz hugo
 
       - run: git submodule add https://github.com/4s3ti/terminalcv.git themes/terminalcv
+      
+      - run: pwd
+      - run: ls themes
+
 
       - name: Build
         run: ${RUNNER_TEMP}/hugo
