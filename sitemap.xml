@@ -1,12 +1,13 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://skylarhoughtongithub.github.io/static-jank-site/categories/index.html</loc>
-  </url>
-  <url>
-    <loc>https://skylarhoughtongithub.github.io/static-jank-site/index.html</loc>
-  </url>
-  <url>
-    <loc>https://skylarhoughtongithub.github.io/static-jank-site/tags/index.html</loc>
+    <loc>https://skylarhoughtongithub.com/home/home/</loc>
+  </url><url>
+    <loc>https://skylarhoughtongithub.com/home/categories/</loc>
+  </url><url>
+    <loc>https://skylarhoughtongithub.com/home/</loc>
+  </url><url>
+    <loc>https://skylarhoughtongithub.com/home/tags/</loc>
   </url>
 </urlset>
