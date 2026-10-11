@@ -63,11 +63,13 @@
       <path d="M -340 0 A 340 70 0 0 0 340 0" stroke="hsl(140,50%,38%)" stroke-width="1" opacity="0.3" />
     </g>
 
-    <!-- Planet body -->
-    <g clip-path="url(#planet-clip)">
-      <circle r="140" fill="url(#planet-body)" />
-      <rect x="-140" y="-140" width="280" height="280" filter="url(#planet-clouds)" opacity="0.85" />
-      <circle r="140" fill="url(#planet-shadow)" />
+    <!-- Planet body (rotates when spin is on) -->
+    <g class="planet-rotator">
+      <g clip-path="url(#planet-clip)">
+        <circle r="140" fill="url(#planet-body)" />
+        <rect x="-140" y="-140" width="280" height="280" filter="url(#planet-clouds)" opacity="0.85" />
+        <circle r="140" fill="url(#planet-shadow)" />
+      </g>
     </g>
 
     <!-- Front halves of rings -->
@@ -102,12 +104,17 @@
   type SkyInstance = { cleanup: () => void }
 
   const STAR_DENSITY = 0.00016
+  const PLANET_GRAD_CX = 32
+  const PLANET_GRAD_CY = 28
 
   const bootSky = (): SkyInstance | null => {
     const canvas = document.querySelector<HTMLCanvasElement>('[data-sky]')
     if (!canvas) return null
     const ctx = canvas.getContext('2d')
     if (!ctx) return null
+    const planetBodyGrad = document.querySelector<SVGElement>('#planet-body')
+    const planetShadowGrad = document.querySelector<SVGElement>('#planet-shadow')
+    const root = document.documentElement
 
     let stars: Star[] = []
     let dpr = Math.min(window.devicePixelRatio || 1, 2)
@@ -116,6 +123,12 @@
     let rafId: number | null = null
     let visible = !document.hidden
     const reducedMq = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    let pointerX = 0
+    let pointerY = 0
+    let targetX = 0
+    let targetY = 0
+    let scrollY = window.scrollY
 
     const seed = () => {
       const count = Math.round(w * h * STAR_DENSITY)
@@ -150,14 +163,33 @@
       for (const s of stars) {
         const twinkle = 0.55 + 0.45 * Math.sin(t * 0.00065 + s.phase)
         const alpha = (0.45 + s.depth * 0.55) * twinkle
+        const offX = pointerX * (2 + s.depth * 14)
+        const offY = pointerY * (2 + s.depth * 14) + scrollY * -0.05 * s.depth
         const color = s.hue < 0
           ? `hsla(0, 0%, 100%, ${alpha})`
           : `hsla(${s.hue}, 75%, 82%, ${alpha})`
         ctx.beginPath()
         ctx.fillStyle = color
-        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2)
+        ctx.arc(s.x + offX, s.y + offY, s.size, 0, Math.PI * 2)
         ctx.fill()
       }
+    }
+
+    const syncCssVars = () => {
+      root.style.setProperty('--sky-pointer-x', pointerX.toFixed(3))
+      root.style.setProperty('--sky-pointer-y', pointerY.toFixed(3))
+      root.style.setProperty('--sky-scroll-y', scrollY.toFixed(0))
+    }
+
+    const syncPlanetLitSide = () => {
+      if (!planetBodyGrad || !planetShadowGrad) return
+      // Lit side follows pointer: pointer right (+x) → highlight shifts right
+      const cx = (PLANET_GRAD_CX + pointerX * 10).toFixed(1) + '%'
+      const cy = (PLANET_GRAD_CY + pointerY * 10).toFixed(1) + '%'
+      planetBodyGrad.setAttribute('cx', cx)
+      planetBodyGrad.setAttribute('cy', cy)
+      planetShadowGrad.setAttribute('cx', cx)
+      planetShadowGrad.setAttribute('cy', cy)
     }
 
     const loop = (t: number) => {
@@ -165,6 +197,10 @@
         rafId = null
         return
       }
+      pointerX += (targetX - pointerX) * 0.08
+      pointerY += (targetY - pointerY) * 0.08
+      syncCssVars()
+      syncPlanetLitSide()
       paint(t)
       rafId = requestAnimationFrame(loop)
     }
@@ -184,8 +220,14 @@
 
     const applyReducedMotion = () => {
       stop()
-      if (reducedMq.matches) paint(0)
-      else start()
+      if (reducedMq.matches) {
+        pointerX = pointerY = targetX = targetY = 0
+        syncCssVars()
+        syncPlanetLitSide()
+        paint(0)
+      } else {
+        start()
+      }
     }
 
     const onResize = () => {
@@ -199,12 +241,28 @@
       else stop()
     }
 
+    const onPointer = (e: PointerEvent | MouseEvent) => {
+      if (reducedMq.matches || root.classList.contains('sky-cursor-off')) {
+        targetX = 0
+        targetY = 0
+        return
+      }
+      targetX = (e.clientX / window.innerWidth - 0.5) * 2
+      targetY = (e.clientY / window.innerHeight - 0.5) * 2
+    }
+
+    const onScroll = () => {
+      scrollY = window.scrollY
+    }
+
     resize()
     applyReducedMotion()
 
     window.addEventListener('resize', onResize)
     reducedMq.addEventListener('change', applyReducedMotion)
     document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('pointermove', onPointer, { passive: true })
+    window.addEventListener('scroll', onScroll, { passive: true })
 
     return {
       cleanup: () => {
@@ -212,6 +270,8 @@
         window.removeEventListener('resize', onResize)
         reducedMq.removeEventListener('change', applyReducedMotion)
         document.removeEventListener('visibilitychange', onVisibility)
+        window.removeEventListener('pointermove', onPointer)
+        window.removeEventListener('scroll', onScroll)
       },
     }
   }
@@ -238,8 +298,24 @@
     display: block;
   }
 
-  html:not(.dark) .sky-canvas {
+  html:not(.dark) .sky-canvas,
+  html.sky-stars-off .sky-canvas {
     display: none;
+  }
+
+  .planet-rotator {
+    transform-origin: 0 0;
+    animation: planet-spin 180s linear infinite;
+  }
+
+  @keyframes planet-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  html.sky-spin-off .planet-rotator { animation: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .planet-rotator { animation: none; }
   }
 
   .sky-body {
@@ -259,6 +335,12 @@
     right: clamp(-18rem, -15vw, -8rem);
     overflow: visible;
     filter: drop-shadow(0 0 calc(28px * var(--glow)) color-mix(in srgb, var(--neon) 20%, transparent));
+    will-change: transform;
+    transform: translate3d(
+      calc(var(--sky-pointer-x, 0) * 24px),
+      calc(var(--sky-pointer-y, 0) * 24px + var(--sky-scroll-y, 0) * -0.35px),
+      0
+    );
   }
 
   html:not(.dark) .planet { display: none; }
@@ -272,6 +354,12 @@
     right: clamp(2rem, 2vw, 4rem);
     display: grid;
     place-items: center;
+    will-change: transform;
+    transform: translate3d(
+      calc(var(--sky-pointer-x, 0) * 14px),
+      calc(var(--sky-pointer-y, 0) * 14px + var(--sky-scroll-y, 0) * -0.28px),
+      0
+    );
   }
 
   html.dark .sun { display: none; }
@@ -296,7 +384,7 @@
     aspect-ratio: 1;
     border-radius: 50%;
     background: radial-gradient(
-      circle at 50% 45%,
+      circle at calc(50% + var(--sky-pointer-x, 0) * 6%) calc(45% + var(--sky-pointer-y, 0) * 6%),
       #ffffff 0%,
       var(--sun-core) 25%,
       color-mix(in srgb, var(--sun-core) 55%, var(--sun-corona)) 60%,
@@ -308,5 +396,4 @@
       0 0 120px color-mix(in srgb, var(--sun-corona) 65%, transparent),
       0 0 240px color-mix(in srgb, var(--sun-corona) 35%, transparent);
   }
-
 </style>

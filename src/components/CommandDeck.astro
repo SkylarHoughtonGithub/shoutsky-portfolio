@@ -115,13 +115,13 @@ const positionedBlips = blips.map((blip, i) => {
   </div>
 
   <footer class="deck-controls">
-    <button type="button" class="deck-btn" data-ctl="stars" disabled title="Toggle stars (phase 6)" aria-label="Toggle stars (phase 6)">
+    <button type="button" class="deck-btn" data-ctl="stars" aria-pressed="false" aria-label="Toggle starfield">
       <span class="icon-[tabler--sparkles] deck-btn-icon"></span><span>stars</span>
     </button>
-    <button type="button" class="deck-btn" data-ctl="spin" disabled title="Toggle spin (phase 6)" aria-label="Toggle spin (phase 6)">
+    <button type="button" class="deck-btn" data-ctl="spin" aria-pressed="false" aria-label="Toggle planet spin">
       <span class="icon-[tabler--rotate] deck-btn-icon"></span><span>spin</span>
     </button>
-    <button type="button" class="deck-btn" data-ctl="cursor" disabled title="Toggle cursor follow (phase 6)" aria-label="Toggle cursor follow (phase 6)">
+    <button type="button" class="deck-btn" data-ctl="cursor" aria-pressed="false" aria-label="Toggle cursor parallax">
       <span class="icon-[tabler--pointer] deck-btn-icon"></span><span>cursor</span>
     </button>
     <button type="button" class="deck-btn" data-ctl="glow" aria-pressed="false" aria-label="Toggle glow intensity">
@@ -134,39 +134,103 @@ const positionedBlips = blips.map((blip, i) => {
 </section>
 
 <script>
-  const deck = document.querySelector<HTMLElement>('.command-deck')
-  if (deck) {
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const lines = deck.querySelectorAll<HTMLLIElement>('.term-line')
+  type DeckToggle = { key: string; cls: string }
+  const SKY_TOGGLES: Record<string, DeckToggle> = {
+    stars: { key: 'sky-stars', cls: 'sky-stars-off' },
+    spin: { key: 'sky-spin', cls: 'sky-spin-off' },
+    cursor: { key: 'sky-cursor', cls: 'sky-cursor-off' },
+  }
 
+  type DeckInstance = { cleanup: () => void }
+
+  const applyStoredSkyToggles = () => {
+    const root = document.documentElement
+    for (const { key, cls } of Object.values(SKY_TOGGLES)) {
+      const off = localStorage.getItem(key) === 'off'
+      root.classList.toggle(cls, off)
+    }
+  }
+
+  // Apply persisted toggles ASAP (before first paint) to avoid flash
+  applyStoredSkyToggles()
+
+  const bootDeck = (): DeckInstance | null => {
+    const deck = document.querySelector<HTMLElement>('.command-deck')
+    if (!deck) return null
+
+    const root = document.documentElement
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const timers: number[] = []
+    const cleanups: Array<() => void> = []
+
+    const lines = deck.querySelectorAll<HTMLLIElement>('.term-line')
+    lines.forEach((line) => line.classList.remove('is-revealed'))
     if (reduced) {
       lines.forEach((line) => line.classList.add('is-revealed'))
     } else {
       let delay = 250
       lines.forEach((line) => {
-        setTimeout(() => line.classList.add('is-revealed'), delay)
+        timers.push(window.setTimeout(() => line.classList.add('is-revealed'), delay))
         delay += 420
       })
     }
 
-    const root = document.documentElement
+    const addListener = (el: Element | null, ev: string, fn: EventListener) => {
+      if (!el) return
+      el.addEventListener(ev, fn)
+      cleanups.push(() => el.removeEventListener(ev, fn))
+    }
+
+    // Glow toggle
     const glowBtn = deck.querySelector<HTMLButtonElement>('[data-ctl="glow"]')
-    glowBtn?.addEventListener('click', () => {
+    addListener(glowBtn, 'click', () => {
       const isDark = root.classList.contains('dark')
       const normal = isDark ? '1' : '0.35'
       const subtle = isDark ? '0.35' : '0.1'
       const current = getComputedStyle(root).getPropertyValue('--glow').trim()
       const next = current === normal ? subtle : normal
       root.style.setProperty('--glow', next)
-      glowBtn.setAttribute('aria-pressed', next === subtle ? 'true' : 'false')
+      glowBtn?.setAttribute('aria-pressed', next === subtle ? 'true' : 'false')
     })
 
-    const themeBtn = deck.querySelector<HTMLButtonElement>('[data-ctl="theme"]')
-    themeBtn?.addEventListener('click', () => {
+    // Theme toggle
+    addListener(deck.querySelector('[data-ctl="theme"]'), 'click', () => {
       const isDark = root.classList.contains('dark')
       window.__theme?.setTheme(isDark ? 'light' : 'dark')
     })
+
+    // Sky toggles: stars / spin / cursor
+    for (const [ctl, { key, cls }] of Object.entries(SKY_TOGGLES)) {
+      const btn = deck.querySelector<HTMLButtonElement>(`[data-ctl="${ctl}"]`)
+      if (!btn) continue
+      // Sync aria-pressed with the already-applied class state
+      btn.setAttribute('aria-pressed', root.classList.contains(cls) ? 'true' : 'false')
+      addListener(btn, 'click', () => {
+        const nowOff = !root.classList.contains(cls)
+        root.classList.toggle(cls, nowOff)
+        localStorage.setItem(key, nowOff ? 'off' : 'on')
+        btn.setAttribute('aria-pressed', nowOff ? 'true' : 'false')
+      })
+    }
+
+    return {
+      cleanup: () => {
+        timers.forEach((id) => clearTimeout(id))
+        cleanups.forEach((fn) => fn())
+      },
+    }
   }
+
+  let currentDeck: DeckInstance | null = null
+  const relaunchDeck = () => {
+    currentDeck?.cleanup()
+    applyStoredSkyToggles()
+    currentDeck = bootDeck()
+  }
+
+  relaunchDeck()
+  document.addEventListener('astro:page-load', relaunchDeck)
+  document.addEventListener('astro:before-swap', () => currentDeck?.cleanup())
 </script>
 
 <style>
