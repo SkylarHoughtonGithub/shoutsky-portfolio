@@ -1,0 +1,59 @@
+---
+name: 'mechatracker'
+description: 'Repair tracking for mechanics, auto shops, and fleet operators. Go API + Next.js web + React Native mobile sharing a single OpenAPI contract.'
+type: 'text'
+tags: ['Go', 'TypeScript', 'PostgreSQL', 'Docker', 'Terraform', 'GitHub Actions', 'Task']
+featured: true
+date: 2026-08-06
+status: 'paused'
+---
+
+## The problem
+
+Mechanics juggle YouTube tutorials, PDF service manuals, parts lookups, and tribal knowledge across half a dozen tools, with no persistent record per vehicle. Solo mechanics, shop teams, and small fleet operators all want the same thing: one place that tracks vehicles, repairs, parts, and history — and that works on a phone next to a lift.
+
+## What I built
+
+A three-surface stack sharing a single contract:
+
+- **Go API server** — HTTP server with `sqlc`-generated type-safe queries over Postgres, `golang-migrate` for migrations, JWT verification middleware for Clerk, and a separate background-worker binary for push notifications and long-running jobs.
+- **Next.js web app** — React + TypeScript, consuming an API client auto-generated from the server's OpenAPI spec.
+- **React Native + Expo mobile** — same generated client, Expo Push → APNs/FCM for notifications, EAS Build/Submit for release.
+- **Infrastructure** — DigitalOcean Droplets, Managed Postgres, Spaces (S3-compatible storage), DOCR, all declared in Terraform and deployed via GitHub Actions.
+
+Repair cards are the core concept — recipe-style profiles with parts, tools, torque specs, and step-by-step procedures. Users save vehicles, drill into system → repair type, log step completions with timestamped notes and photos, and the finished repair gets archived as an immutable snapshot per vehicle.
+
+## A decision I'd defend
+
+I auto-generated the TypeScript API client from the Go server's OpenAPI spec via `openapi-typescript`, so both the web and mobile apps consume the same typed client. Hand-maintaining types across three languages is where product velocity goes to die; this way an API change propagates to every surface in a single commit, and the TypeScript compiler surfaces breakage before the apps even start.
+
+```go
+// api/handlers/repairs.go — the Go handler and its OpenAPI tag drive codegen
+// @summary Create a repair card from a template
+// @id      createRepairFromTemplate
+// @tags    repairs
+// @accept  json
+// @produce json
+// @param   body body CreateRepairFromTemplateRequest true "request"
+// @success 201  {object} RepairCard
+// @router  /v1/repairs [post]
+func (h *Handler) CreateRepairFromTemplate(w http.ResponseWriter, r *http.Request) {
+    // ...
+}
+```
+
+```ts
+// web — same shape, auto-generated, used in a React Query hook
+import type { paths } from "@/lib/api/schema";
+type CreateReq = paths["/v1/repairs"]["post"]["requestBody"]["content"]["application/json"];
+type RepairCard = paths["/v1/repairs"]["post"]["responses"]["201"]["content"]["application/json"];
+
+export const useCreateRepair = () =>
+  useMutation({ mutationFn: (body: CreateReq) => api.POST("/v1/repairs", { body }) });
+```
+
+## Where it stands
+
+The backend, web shell, mobile scaffold, and infrastructure are all in place. Progress stalled during the Clerk auth integration — custom JWT verification in the Go middleware plus session handoff into Expo turned into a longer rabbit hole than I'd planned for. The project is paused rather than abandoned; picking it back up is on the list once the auth design is settled.
+
+*The repo is private.*

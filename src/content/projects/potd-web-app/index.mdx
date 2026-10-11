@@ -1,0 +1,50 @@
+---
+name: 'POTD Web App'
+description: 'Flask app wrapping NASA Astronomy Picture of the Day — small project, serious CI: tests, lint, security scan, and container build all gating merge.'
+githubUrl: 'https://github.com/SkylarHoughtonGithub/potd-web-app'
+type: 'text'
+tags: ['Python', 'Docker', 'GitHub Actions']
+featured: false
+date: 2025-08-23
+status: 'shipped'
+---
+
+## The problem
+
+I wanted a project small enough to iterate on quickly but structured enough to practice end-to-end delivery hygiene — the stuff that gets skipped on side projects and bites you on real ones. CI with real gates, container builds, security scanning, Swagger-documented endpoints: all of it, on a project no bigger than a weekend.
+
+## What I built
+
+A Flask app that fetches NASA's Astronomy Picture of the Day and exposes it both as an HTML view and a Swagger-documented REST API. The interesting part isn't the app — it's the pipeline around it.
+
+- **Unit tests** — `pytest` suite with coverage reporting.
+- **Quality checks** — `ruff` + `black` + `mypy`, failing the build on violations.
+- **Security scans** — `bandit` for static analysis + dependency vulnerability checks.
+- **Container build** — on merge to main, image gets built and pushed to GHCR, tagged by both commit SHA and `latest`.
+
+## A decision I'd defend
+
+I split CI into four separate GitHub Actions workflows instead of one monolithic pipeline. The common instinct is to chain everything together so you have one green/red signal per commit; what you lose is the ability to see at a glance which dimension of quality is failing. With four parallel workflows, a lint failure doesn't block the test run from completing, and the PR view shows you four distinct checks — fast, independent feedback on each concern.
+
+```yaml
+# .github/workflows/python_security_tests.yml — one workflow, one concern
+name: Python Security Scan
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  bandit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install bandit
+      - run: bandit -r app/ -ll -ii
+```
+
+## Result
+
+Every PR gets four green checks before merge becomes an option. The image publishes to GHCR automatically, which means pulling and running a current build is a one-liner. The patterns transferred directly to real work: the Skylab repos use the same split-workflow approach now.

@@ -1,0 +1,104 @@
+---
+import { cn } from '~/lib/utils'
+
+interface Props {
+  class?: string
+  id?: string
+}
+
+const { class: className, id = 'backToTopDesktop' } = Astro.props
+---
+
+<button
+  {id}
+  class={cn(
+    'group flex items-center justify-center size-9',
+    'bg-primary/4 hover:bg-primary/10',
+    'text-primary/70 hover:text-primary',
+    'transition-colors duration-200',
+    'dark:bg-primary/10 dark:hover:bg-primary/15',
+    'dark:text-primary/80 dark:hover:text-primary',
+    'cursor-pointer',
+    'opacity-0 invisible translate-y-4 transition-all duration-300 ease-out',
+    className
+  )}
+  aria-label="Back to top"
+>
+  <span class="icon-[ph--arrow-up] transition-transform duration-200 group-hover:-translate-y-0.5 size-4w"></span>
+</button>
+
+<script>
+  /**
+   * Handle scroll events — show or hide the back-to-top button.
+   */
+  function handleScroll() {
+    // Select all buttons whose id starts with "backToTop"
+    const backToTopButtons = document.querySelectorAll('[id^="backToTop"]')
+    const footer = document.querySelector('footer')
+
+    backToTopButtons.forEach((button) => {
+      // Check if this is the mobile button
+      const isMobile = button.id === 'backToTopMobile'
+      // Base show condition: scrolled more than 300px
+      let shouldShow = window.scrollY > 300
+
+      // Mobile special case: hide button when near the footer to avoid overlap
+      if (isMobile && footer && shouldShow) {
+        const footerTop = footer.getBoundingClientRect().top
+        const windowHeight = window.innerHeight
+        // Hide when footer is within 100px of the bottom of the viewport
+        shouldShow = footerTop > windowHeight - 100
+      }
+
+      const buttonElement = button as HTMLElement
+      if (isMobile) {
+        // Mobile: slide off-screen when hidden
+        if (shouldShow) {
+          button.classList.remove('opacity-0', 'invisible', 'translate-y-4')
+          buttonElement.style.transform = 'translateY(0)'
+          buttonElement.style.pointerEvents = 'auto'
+        } else {
+          button.classList.add('opacity-0', 'invisible')
+          // Slide fully off-screen to avoid interaction
+          buttonElement.style.transform = 'translateY(120px)'
+          buttonElement.style.pointerEvents = 'none'
+        }
+      } else {
+        // Desktop: keep the original animation
+        if (shouldShow) {
+          button.classList.remove('opacity-0', 'invisible', 'translate-y-4')
+        } else {
+          button.classList.add('opacity-0', 'invisible', 'translate-y-4')
+        }
+      }
+    })
+  }
+
+  /**
+   * Initialize back-to-top functionality.
+   * Binds click events and scroll listener.
+   */
+  function setupBackToTop() {
+    // Select all back-to-top buttons
+    const backToTopButtons = document.querySelectorAll('[id^="backToTop"]')
+
+    // Add click listener to each button
+    backToTopButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        // Smooth-scroll to the top of the page
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      })
+    })
+
+    // Listen for page scroll events
+    window.addEventListener('scroll', handleScroll)
+  }
+
+  if (document.readyState !== 'loading') {
+    setupBackToTop()
+  } else {
+    document.addEventListener('DOMContentLoaded', setupBackToTop)
+  }
+
+  document.addEventListener('astro:page-load', setupBackToTop)
+</script>

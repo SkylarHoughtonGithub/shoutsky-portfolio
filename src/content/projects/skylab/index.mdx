@@ -1,0 +1,83 @@
+---
+name: 'Skylab'
+description: 'A self-hosted platform-engineering environment: Packer-baked images, Terraform-provisioned infra, Ansible configuration, custom container images, ArgoCD GitOps delivery, and a Backstage service catalog on top.'
+githubUrl: 'https://github.com/SkylarHoughtonGithub?tab=repositories&q=skylab'
+type: 'text'
+tags: ['Terraform', 'Ansible', 'Kubernetes', 'Docker', 'Crossplane', 'Python', 'TypeScript', 'GitHub Actions', 'Bash']
+featured: true
+date: 2025-09-05
+status: 'shipped'
+---
+
+## The problem
+
+Running personal infrastructure as a pile of ad-hoc shell scripts is fine until the day you need to rebuild it. More importantly, if you want reps on the same tools that run real platforms — IaC, GitOps, service catalogs, custom container images — you need somewhere to practice them end-to-end on your own hardware instead of in a toy sandbox.
+
+## What I built
+
+A full self-hosted platform spread across a handful of repos, each one a distinct layer of the stack:
+
+| Layer           | Repo                              | Role                                             |
+|-----------------|-----------------------------------|--------------------------------------------------|
+| Image           | `skylab-packer`                   | Packer templates for base OS images              |
+| Infrastructure  | `skylab-terraform`                | Terraform modules for compute, network, storage  |
+| Configuration   | `skylab-ansible`                  | Ansible roles & playbooks for host configuration |
+| Delivery (CD)   | `skylab-argo-root` / `-workloads` | ArgoCD GitOps for Kubernetes workloads           |
+| Bootstrap       | `skylab-argo-bootstrap`           | Repeatable cluster + ArgoCD bootstrap            |
+| Workloads       | `shoutsky-images`                 | Custom container images + Kustomize manifests    |
+| Service catalog | `skylab-backstage-catalog` / `-configs` | Backstage software templates for self-service EKS provisioning via Crossplane |
+
+Each layer owns one job, and the handoffs are explicit. Packer produces images; Terraform consumes them; Ansible configures what Terraform can't; ArgoCD takes over inside the cluster and syncs the workload layer out of `shoutsky-images`; Backstage sits on top as a service catalog.
+
+## A decision I'd defend
+
+I committed to GitOps-first on day one via ArgoCD's app-of-apps pattern instead of using imperative `kubectl` for anything. It feels heavier than it needs to be for a homelab, and in the short term it absolutely is — you can't `kubectl apply` your way out of a problem. But the forcing function is the point: the entire cluster state lives in `skylab-argo-root`, so a recovery is `terraform apply` + `argocd app sync` and I'm back where I was, with no undocumented drift.
+
+```yaml
+# skylab-argo-root/clusters/prod/backstage.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: backstage-prod
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/SkylarHoughtonGithub/skylab-argo-root
+    targetRevision: HEAD
+    path: apps/backstage/overlays/prod
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: backstage
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+```
+
+## Workloads: owning the image layer
+
+A platform is only as useful as the workloads running on it, so I built out `shoutsky-images` as the workload layer ArgoCD syncs. Rather than consume upstream images with runtime env-var surgery, I bake configuration conventions into custom images — multi-stage, distroless, non-root, deterministic startup. The cost is maintenance (I own CVE patching for what I bake in), but secrets stay out of ConfigMaps and the image boots the same way every time regardless of what the orchestrator throws at it.
+
+```dockerfile
+# shoutsky-images/svc/foo/Dockerfile — representative multi-stage distroless build
+FROM golang:1.23-alpine AS build
+WORKDIR /src
+COPY go.* ./
+RUN go mod download
+COPY . .
+RUN CGO_ENABLED=0 go build -trimpath -ldflags="-s -w" -o /out/app ./cmd/app
+
+FROM gcr.io/distroless/static-debian12:nonroot
+COPY --from=build /out/app /app
+USER nonroot:nonroot
+ENTRYPOINT ["/app"]
+```
+
+## Beyond the stack: a custom controller
+
+Not everything the platform needs is upstream. The MikroTik router that handles DNS for the lab has no first-party Kubernetes integration, so I wrote one — a Python Kubernetes operator that watches `Service` and `Ingress` resources and reconciles DNS records on the router over its API. The Backstage service catalog on top is standard Backstage (TypeScript), configured per-environment via `skylab-backstage-configs`.
+
+## Result
+
+A full homelab rebuild from zero is a chain of `packer build` → `terraform apply` → `ansible-playbook` → ArgoCD takeover, with workloads materializing from `shoutsky-images` the moment ArgoCD syncs. Drift gets caught automatically. The RHCE8 Ansible material baked into `skylab-ansible` doubles as study notes, which is why that repo picked up its only star.

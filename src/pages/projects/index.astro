@@ -1,0 +1,62 @@
+---
+import { PROJECTS_CONFIG } from '~/config'
+import Layout from '~/layouts/Layout.astro'
+import SectionDivider from '~/components/base/SectionDivider.astro'
+import { getAllProjects } from '~/lib/data'
+import PageTitle from '~/components/base/PageTitle.astro'
+
+const { title, description, introduce } = PROJECTS_CONFIG
+const projects = await getAllProjects()
+
+const statusLabel: Record<string, string> = {
+  shipped: 'Shipped',
+  'in-progress': 'In progress',
+  paused: 'Paused',
+  archived: 'Archived',
+}
+---
+
+<Layout {title} {description}>
+  <div class="relative z-[1] py-8 pb-10">
+    <div class="px-6 sm:px-8">
+      <PageTitle {title} {introduce} />
+    </div>
+    <div class="grid grid-cols-1 fade-up">
+      {
+        projects.map((project, index) => (
+          <div>
+            <a
+              href={`/projects/${project.id}`}
+              class="group relative block hover:bg-muted/30 dark:hover:bg-muted/30 transition-colors duration-300 px-6 sm:px-8 py-5"
+            >
+              <div class="flex items-start justify-between gap-4 mb-2">
+                <h2 class="font-semibold text-xl tracking-tight group-hover:text-primary transition-colors">
+                  {project.data.name}
+                </h2>
+                {project.data.status && (
+                  <span class="shrink-0 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md border border-tag-border bg-tag-bg text-tag-text text-[10px] font-medium uppercase tracking-wide">
+                    {project.data.status === 'shipped' && <span class="size-1.5 rounded-full bg-[var(--term-ok)]" />}
+                    {project.data.status === 'in-progress' && <span class="size-1.5 rounded-full bg-[var(--neon)] animate-pulse" />}
+                    {project.data.status === 'paused' && <span class="size-1.5 rounded-full bg-[var(--muted)]" />}
+                    {statusLabel[project.data.status]}
+                  </span>
+                )}
+              </div>
+              <p class="text-muted-foreground mb-3 text-pretty">{project.data.description}</p>
+              {project.data.tags.length > 0 && (
+                <div class="flex flex-wrap gap-1.5">
+                  {project.data.tags.map((tag) => (
+                    <span class="inline-flex items-center px-2 py-0.5 rounded-md border border-tag-border bg-tag-bg text-tag-text text-[10px] uppercase tracking-wide">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </a>
+            <SectionDivider className={index == projects.length - 1 ? 'hidden' : ''} />
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</Layout>

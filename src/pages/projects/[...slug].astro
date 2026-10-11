@@ -1,0 +1,87 @@
+---
+import Layout from '~/layouts/Layout.astro'
+import { render } from 'astro:content'
+import { getAllProjects } from '~/lib/data'
+import { SITE } from '~/config'
+
+export async function getStaticPaths() {
+  const projects = await getAllProjects()
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }))
+}
+
+const { project } = Astro.props
+const { data: fm } = project
+const { Content } = await render(project)
+
+const statusLabel: Record<string, string> = {
+  shipped: 'Shipped',
+  'in-progress': 'In progress',
+  paused: 'Paused',
+  archived: 'Archived',
+}
+
+const dateStr = fm.date
+  ? new Date(fm.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })
+  : null
+---
+
+<Layout
+  title={fm.name}
+  description={fm.description}
+  image={fm.icon?.src ? `${SITE.website}${fm.icon.src}` : SITE.ogImage}
+>
+  <article class="relative z-[1] py-8 pb-10 px-6 sm:px-8">
+    <a href="/projects" class="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6">
+      <span class="icon-[mdi--arrow-left] size-4" />
+      <span>All projects</span>
+    </a>
+
+    <header class="mb-8">
+      <h1 class="text-3xl sm:text-4xl tracking-tight mb-3">{fm.name}</h1>
+      <p class="text-muted-foreground text-lg text-pretty mb-5">{fm.description}</p>
+
+      {(fm.tags.length > 0 || fm.status || dateStr) && (
+        <div class="flex flex-wrap items-center gap-2 mb-5 text-xs">
+          {fm.status && (
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md border border-tag-border bg-tag-bg text-tag-text font-medium uppercase tracking-wide">
+              {fm.status === 'shipped' && <span class="size-1.5 rounded-full bg-[var(--term-ok)]" />}
+              {fm.status === 'in-progress' && <span class="size-1.5 rounded-full bg-[var(--neon)] animate-pulse" />}
+              {fm.status === 'paused' && <span class="size-1.5 rounded-full bg-[var(--muted)]" />}
+              {statusLabel[fm.status]}
+            </span>
+          )}
+          {fm.tags.map((tag) => (
+            <span class="inline-flex items-center px-2.5 py-1 rounded-md border border-tag-border bg-tag-bg text-tag-text uppercase tracking-wide">
+              {tag}
+            </span>
+          ))}
+          {dateStr && <span class="text-muted-foreground ml-auto">{dateStr}</span>}
+        </div>
+      )}
+
+      {(fm.githubUrl || fm.website) && (
+        <div class="flex items-center gap-5 text-sm">
+          {fm.githubUrl && (
+            <a href={fm.githubUrl} target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
+              <span class="icon-[mdi--github] size-4" />
+              <span>GitHub</span>
+            </a>
+          )}
+          {fm.website && (
+            <a href={fm.website} target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-muted-foreground hover:text-foreground transition-colors">
+              <span class="icon-[mdi--web] size-4" />
+              <span>Website</span>
+            </a>
+          )}
+        </div>
+      )}
+    </header>
+
+    <div class="pro max-w-none">
+      <Content />
+    </div>
+  </article>
+</Layout>
