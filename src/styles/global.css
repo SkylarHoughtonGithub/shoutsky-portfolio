@@ -47,16 +47,22 @@
     --neon:     #15803d;
     --neon2:    #0f766e;
 
-    /* --- terminal accent (same in both modes) --- */
-    --term-cmd: #6ee7a0;
-    --term-ok:  #bef264;
+    /* --- light-mode sky gradient (dawn → pale mint) --- */
+    --sky-top:    #cfe3ff;
+    --sky-bottom: #edf4ef;
 
-    /* --- terminal surface (always dark) --- */
-    --term-bg:     #0c110e;
-    --term-header: #121a15;
-    --term-border: #1f2a23;
-    --term-text:   #e4f2e9;
-    --term-muted:  #8aa595;
+    /* --- sun (always warm; only shows in light mode) --- */
+    --sun-core:   #fff8dc;
+    --sun-corona: #ffd98a;
+
+    /* --- terminal surface (light defaults; .dark overrides below) --- */
+    --term-bg:     #f6f9f3;
+    --term-header: #e8efe8;
+    --term-border: #c7d7ca;
+    --term-text:   #152319;
+    --term-muted:  #6a8072;
+    --term-cmd:    #0d7a3f;
+    --term-ok:     #5a8a1a;
 
     /* --- glow multiplier (subtle in light) --- */
     --glow: 0.35;
@@ -83,9 +89,9 @@
 
   /* --- dark palette --- */
   .dark {
-    --bg:       #040906;
-    --panel:    #0a120d;
-    --line:     #1b2a21;
+    --bg:       #000000;
+    --panel:    #080f0b;
+    --line:     #1e2e24;
     --text:     #e4f2e9;
     --muted:    #8aa595;
     --neon:     #4ade80;
@@ -94,8 +100,17 @@
 
     --tag-bg:       #0f1c14;
     --tag-bg-hover: #162419;
-    --tag-border:   #1b2a21;
+    --tag-border:   #1e2e24;
     --tag-text:     #8aa595;
+
+    /* --- terminal surface overrides for dark mode --- */
+    --term-bg:     #0c110e;
+    --term-header: #121a15;
+    --term-border: #1f2a23;
+    --term-text:   #e4f2e9;
+    --term-muted:  #8aa595;
+    --term-cmd:    #6ee7a0;
+    --term-ok:     #bef264;
   }
 }
 
@@ -107,7 +122,7 @@
 
   html {
     color-scheme: light;
-    background-color: var(--color-background);
+    background: var(--color-background);
     font-family: var(--font-body);
     scroll-behavior: smooth;
     @variant dark {
@@ -115,8 +130,13 @@
     }
   }
 
+  html:not(.dark) {
+    background: linear-gradient(to bottom, var(--sky-top), var(--sky-bottom)) fixed;
+  }
+
   body {
-    @apply min-h-screen bg-background text-foreground;
+    @apply min-h-screen text-foreground;
+    background: transparent;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -454,6 +474,7 @@ input[type='search']::-moz-search-cancel-button { display: none; }
   overflow: hidden;
   box-shadow: 0 0 calc(12px * var(--glow)) color-mix(in srgb, var(--neon) 18%, transparent);
 }
+
 
 /* ===== Heading Anchor Links ===== */
 .header-anchor {

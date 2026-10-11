@@ -1,0 +1,312 @@
+---
+---
+
+<canvas class="sky-canvas" aria-hidden="true" data-sky></canvas>
+
+<div class="sky-body" aria-hidden="true">
+  <svg class="planet" viewBox="-400 -400 800 800" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <defs>
+      <radialGradient id="planet-body" cx="32%" cy="28%" r="92%">
+        <stop offset="0%"   stop-color="hsl(140, 65%, 60%)" />
+        <stop offset="38%"  stop-color="hsl(142, 55%, 40%)" />
+        <stop offset="72%"  stop-color="hsl(148, 60%, 20%)" />
+        <stop offset="100%" stop-color="hsl(152, 65%, 6%)" />
+      </radialGradient>
+
+      <radialGradient id="planet-shadow" cx="32%" cy="28%" r="95%">
+        <stop offset="0%"   stop-color="rgba(0,0,0,0)" />
+        <stop offset="55%"  stop-color="rgba(0,0,0,0.12)" />
+        <stop offset="100%" stop-color="rgba(0,0,0,0.82)" />
+      </radialGradient>
+
+      <filter id="planet-clouds" x="-10%" y="-10%" width="120%" height="120%">
+        <!-- Base landmass shapes -->
+        <feTurbulence type="fractalNoise" baseFrequency="0.009" numOctaves="4" seed="11" result="landNoise" />
+        <!-- Threshold noise into binary continents via discrete alpha steps -->
+        <feComponentTransfer in="landNoise" result="land">
+          <feFuncA type="discrete" tableValues="0 0 0 0 0 0.35 0.7 0.9 1 1" />
+        </feComponentTransfer>
+        <feColorMatrix in="land" type="matrix" values="
+          0 0 0 0 0.9
+          0 0 0 0 1
+          0 0 0 0 0.93
+          0 0 0 1 0" result="landColored" />
+        <!-- Finer detail: coastline flecks + inland texture -->
+        <feTurbulence type="fractalNoise" baseFrequency="0.055" numOctaves="2" seed="23" result="detail" />
+        <feComponentTransfer in="detail" result="detailStepped">
+          <feFuncA type="discrete" tableValues="0 0 0 0.4 0.8 1" />
+        </feComponentTransfer>
+        <feColorMatrix in="detailStepped" type="matrix" values="
+          0 0 0 0 0.78
+          0 0 0 0 0.95
+          0 0 0 0 0.82
+          0 0 0 0.5 0" result="detailColored" />
+        <feComposite in="detailColored" in2="landColored" operator="in" result="detailMasked" />
+        <feMerge>
+          <feMergeNode in="landColored" />
+          <feMergeNode in="detailMasked" />
+        </feMerge>
+      </filter>
+
+      <clipPath id="planet-clip"><circle r="140" /></clipPath>
+    </defs>
+
+    <!-- Back halves of rings -->
+    <g transform="rotate(-18)" fill="none">
+      <path d="M -170 0 A 170 34 0 0 0 170 0" stroke="hsl(140,60%,55%)" stroke-width="1.5" opacity="0.55" />
+      <path d="M -195 0 A 195 40 0 0 0 195 0" stroke="hsl(140,65%,62%)" stroke-width="2.5" opacity="0.78" />
+      <path d="M -215 0 A 215 44 0 0 0 215 0" stroke="hsl(140,55%,38%)" stroke-width="1" opacity="0.5" />
+      <path d="M -238 0 A 238 48 0 0 0 238 0" stroke="hsl(140,65%,58%)" stroke-width="2" opacity="0.68" />
+      <path d="M -262 0 A 262 54 0 0 0 262 0" stroke="hsl(140,50%,35%)" stroke-width="1" opacity="0.42" />
+      <path d="M -288 0 A 288 59 0 0 0 288 0" stroke="hsl(140,60%,50%)" stroke-width="1.5" opacity="0.55" />
+      <path d="M -312 0 A 312 64 0 0 0 312 0" stroke="hsl(140,55%,42%)" stroke-width="1" opacity="0.4" />
+      <path d="M -340 0 A 340 70 0 0 0 340 0" stroke="hsl(140,50%,38%)" stroke-width="1" opacity="0.3" />
+    </g>
+
+    <!-- Planet body -->
+    <g clip-path="url(#planet-clip)">
+      <circle r="140" fill="url(#planet-body)" />
+      <rect x="-140" y="-140" width="280" height="280" filter="url(#planet-clouds)" opacity="0.85" />
+      <circle r="140" fill="url(#planet-shadow)" />
+    </g>
+
+    <!-- Front halves of rings -->
+    <g transform="rotate(-18)" fill="none">
+      <path d="M -170 0 A 170 34 0 0 1 170 0" stroke="hsl(140,60%,55%)" stroke-width="1.5" opacity="0.55" />
+      <path d="M -195 0 A 195 40 0 0 1 195 0" stroke="hsl(140,65%,62%)" stroke-width="2.5" opacity="0.78" />
+      <path d="M -215 0 A 215 44 0 0 1 215 0" stroke="hsl(140,55%,38%)" stroke-width="1" opacity="0.5" />
+      <path d="M -238 0 A 238 48 0 0 1 238 0" stroke="hsl(140,65%,58%)" stroke-width="2" opacity="0.68" />
+      <path d="M -262 0 A 262 54 0 0 1 262 0" stroke="hsl(140,50%,35%)" stroke-width="1" opacity="0.42" />
+      <path d="M -288 0 A 288 59 0 0 1 288 0" stroke="hsl(140,60%,50%)" stroke-width="1.5" opacity="0.55" />
+      <path d="M -312 0 A 312 64 0 0 1 312 0" stroke="hsl(140,55%,42%)" stroke-width="1" opacity="0.4" />
+      <path d="M -340 0 A 340 70 0 0 1 340 0" stroke="hsl(140,50%,38%)" stroke-width="1" opacity="0.3" />
+    </g>
+  </svg>
+
+  <div class="sun">
+    <div class="sun-corona"></div>
+    <div class="sun-core"></div>
+  </div>
+</div>
+
+<script>
+  type Star = {
+    x: number
+    y: number
+    depth: number
+    size: number
+    phase: number
+    hue: number
+  }
+
+  type SkyInstance = { cleanup: () => void }
+
+  const STAR_DENSITY = 0.00016
+
+  const bootSky = (): SkyInstance | null => {
+    const canvas = document.querySelector<HTMLCanvasElement>('[data-sky]')
+    if (!canvas) return null
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return null
+
+    let stars: Star[] = []
+    let dpr = Math.min(window.devicePixelRatio || 1, 2)
+    let w = 0
+    let h = 0
+    let rafId: number | null = null
+    let visible = !document.hidden
+    const reducedMq = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    const seed = () => {
+      const count = Math.round(w * h * STAR_DENSITY)
+      stars = []
+      for (let i = 0; i < count; i++) {
+        const depth = Math.random()
+        stars.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          depth,
+          size: 0.4 + depth * 1.7,
+          phase: Math.random() * Math.PI * 2,
+          hue: Math.random() < 0.08 ? 150 : Math.random() < 0.3 ? 180 : -1,
+        })
+      }
+    }
+
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2)
+      w = window.innerWidth
+      h = window.innerHeight
+      canvas.width = Math.round(w * dpr)
+      canvas.height = Math.round(h * dpr)
+      canvas.style.width = w + 'px'
+      canvas.style.height = h + 'px'
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      seed()
+    }
+
+    const paint = (t: number) => {
+      ctx.clearRect(0, 0, w, h)
+      for (const s of stars) {
+        const twinkle = 0.55 + 0.45 * Math.sin(t * 0.00065 + s.phase)
+        const alpha = (0.45 + s.depth * 0.55) * twinkle
+        const color = s.hue < 0
+          ? `hsla(0, 0%, 100%, ${alpha})`
+          : `hsla(${s.hue}, 75%, 82%, ${alpha})`
+        ctx.beginPath()
+        ctx.fillStyle = color
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2)
+        ctx.fill()
+      }
+    }
+
+    const loop = (t: number) => {
+      if (!visible) {
+        rafId = null
+        return
+      }
+      paint(t)
+      rafId = requestAnimationFrame(loop)
+    }
+
+    const start = () => {
+      if (rafId == null && visible && !reducedMq.matches) {
+        rafId = requestAnimationFrame(loop)
+      }
+    }
+
+    const stop = () => {
+      if (rafId != null) {
+        cancelAnimationFrame(rafId)
+        rafId = null
+      }
+    }
+
+    const applyReducedMotion = () => {
+      stop()
+      if (reducedMq.matches) paint(0)
+      else start()
+    }
+
+    const onResize = () => {
+      resize()
+      applyReducedMotion()
+    }
+
+    const onVisibility = () => {
+      visible = !document.hidden
+      if (visible) start()
+      else stop()
+    }
+
+    resize()
+    applyReducedMotion()
+
+    window.addEventListener('resize', onResize)
+    reducedMq.addEventListener('change', applyReducedMotion)
+    document.addEventListener('visibilitychange', onVisibility)
+
+    return {
+      cleanup: () => {
+        stop()
+        window.removeEventListener('resize', onResize)
+        reducedMq.removeEventListener('change', applyReducedMotion)
+        document.removeEventListener('visibilitychange', onVisibility)
+      },
+    }
+  }
+
+  let current: SkyInstance | null = null
+  const relaunch = () => {
+    current?.cleanup()
+    current = bootSky()
+  }
+
+  relaunch()
+  document.addEventListener('astro:page-load', relaunch)
+  document.addEventListener('astro:before-swap', () => current?.cleanup())
+</script>
+
+<style>
+  .sky-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    display: block;
+  }
+
+  html:not(.dark) .sky-canvas {
+    display: none;
+  }
+
+  .sky-body {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  /* ===== Planet (dark mode) ===== */
+  .planet {
+    position: absolute;
+    width: clamp(28rem, 60vw, 52rem);
+    aspect-ratio: 1;
+    top: clamp(-20rem, -17vw, -10rem);
+    right: clamp(-18rem, -15vw, -8rem);
+    overflow: visible;
+    filter: drop-shadow(0 0 calc(28px * var(--glow)) color-mix(in srgb, var(--neon) 20%, transparent));
+  }
+
+  html:not(.dark) .planet { display: none; }
+
+  /* ===== Sun (light mode) ===== */
+  .sun {
+    position: absolute;
+    width: clamp(28rem, 55vw, 48rem);
+    aspect-ratio: 1;
+    top: clamp(2rem, 2vw, 4rem);
+    right: clamp(2rem, 2vw, 4rem);
+    display: grid;
+    place-items: center;
+  }
+
+  html.dark .sun { display: none; }
+
+  .sun-corona {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 50% 50%,
+      color-mix(in srgb, var(--sun-corona) 55%, transparent) 8%,
+      color-mix(in srgb, var(--sun-corona) 30%, transparent) 28%,
+      color-mix(in srgb, var(--sun-corona) 12%, transparent) 50%,
+      transparent 72%
+    );
+    filter: blur(1px);
+  }
+
+  .sun-core {
+    position: relative;
+    width: 48%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 50% 45%,
+      #ffffff 0%,
+      var(--sun-core) 25%,
+      color-mix(in srgb, var(--sun-core) 55%, var(--sun-corona)) 60%,
+      var(--sun-corona) 90%,
+      color-mix(in srgb, var(--sun-corona) 50%, transparent) 100%
+    );
+    box-shadow:
+      0 0 50px color-mix(in srgb, var(--sun-core) 70%, transparent),
+      0 0 120px color-mix(in srgb, var(--sun-corona) 65%, transparent),
+      0 0 240px color-mix(in srgb, var(--sun-corona) 35%, transparent);
+  }
+
+</style>

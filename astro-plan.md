@@ -4,7 +4,7 @@ Overview
 Build a developer portfolio on Astro, starting from the free Litos theme and extending it into a green, space-themed "command deck" that stays professional underneath the fun. The target is roughly two to three weekends of work, live on a free host.
 • Framework: Astro, chosen over Hugo for component-based customization while keeping Markdown content.
 • Base theme: Litos (MIT), which already has projects with tags, Expressive Code, dark mode, and a single src/config.ts.
-• Design direction: a starfield with a rotating ringed planet that reacts to the cursor, a command-deck hero with a typed terminal and tracking radar, a scrolling stack of tech icons that filters projects, and terminal-styled code blocks.
+• Design direction: dark mode is the primary — a starfield with a rotating ringed planet that reacts to the cursor; light mode is its daytime inverse — a soft gradient sky with a sun where the planet would sit. Both share the command-deck hero (typed terminal + tracking radar), a scrolling stack of tech icons that filters projects, and terminal-styled code blocks.
 • Reference: the command deck demo is the visual target for every component below.
 Rejected along the way: Hugo (theme overrides were painful), the paid DevPro template ($40), a contribution grid, and a telemetry panel.
 
@@ -58,7 +58,7 @@ Terminal commands and keywords
 #bef264
 #bef264
 Status text, radar blips, strings
-Terminal surfaces (deck bays, code blocks) stay dark in both modes. Dedicated tokens that never flip: --term-bg #0c110e, --term-header #121a15, --term-border #1f2a23, --term-text #e4f2e9, --term-muted #8aa595, plus the always-same --term-cmd / --term-ok accents. Rule of thumb: anything rendered on a dark bay surface must use these, never --text / --muted (which flip to dark values in light mode and vanish on the dark surface).
+Terminal surfaces (deck bays, code blocks) now adapt to the active mode — the always-dark terminal was too jarring against the daytime sky in light mode. --term-bg / --term-header / --term-border / --term-text / --term-muted / --term-cmd / --term-ok are all defined once with soft-paper values in :root and overridden with the dark palette in .dark. Expressive Code ships two matching themes (command-deck-light + command-deck-dark) wired via themeCssSelector; frame chrome stays bound to --term-* so it swaps automatically.
 Glow. Every glow is a shadow multiplied by --glow (1 in dark mode, 0.35 in light), for example 0 0 calc(20px * var(--glow)) .... Turning the site from loud to subtle is a one-number change.
 Type. Chakra Petch for headings, IBM Plex Sans for body, JetBrains Mono for terminals and code, all from Google Fonts with system fallbacks.
 Components
@@ -69,8 +69,8 @@ What it does
 Notes
 Sky.astro
 Base layout, behind everything
-Canvas starfield at several depths plus a ringed green planet whose bands and storms rotate
-Stars and planet shift with the cursor (eased parallax); planet's lit side follows the pointer; planet scrolls away with parallax; static when reduced motion is on
+Dark mode: canvas starfield at several depths plus a ringed green planet whose bands and storms rotate. Light mode: body background becomes a soft dawn gradient (sky-top → sky-bottom tokens), and the planet slot is replaced by a warm radial-gradient sun with a faint corona. Same component, mode-switched surface.
+Stars/planet (dark) and sun (light) shift with the cursor (eased parallax); the planet's lit side follows the pointer, the sun's corona subtly brightens on the side the pointer approaches. Both scroll away with parallax. All motion freezes on reduced-motion
 CommandDeck.astro
 Homepage hero, replacing Litos's hero
 Frame with a typed terminal bay and a tracking radar bay, plus a control strip
@@ -114,7 +114,7 @@ Six phases, about 20 to 28 hours total. Each phase ends with something deployabl
 3. ✓ Content — 4 project MDX files, schema extended with tags/featured/date/status, built a /projects/[slug] detail-page route (wasn't in the plan but needed for the write-ups to render). About page skipped; home page doubles as it, per Litos's layout.
 4. Cards and code blocks (2 to 3 h) — Next. Card glow and filtered state; theme Expressive Code in ec.config.mjs.
 5. ✓ Command deck and marquee — 5a CommandDeck shell (frame + typed terminal + control strip with live glow/theme toggles, placeholder stars/spin/cursor awaiting phase 6). 5b radar bay with per-featured-project blips: sweep-synced subtle ping, hover opens a mini-card (name + description + status chip), click → /projects/<slug>. 5c SkillsShowcase restyled as command-deck chips (mono uppercase, mint-on-hover glow, keyboard-nav skips duplicated pills); new FeaturedProjects strip under the marquee. Homepage order: hero + socials + CommandDeck → Stack marquee → Featured work; GitHub Activity and Posts sections removed. 5d tag filter on /projects: client script reads ?tag=X, dims non-matching cards (hover restores partial opacity so they're still clickable), filter banner shows active tag + match count + Clear link.
-6. Sky (5 to 7 h) — Port the starfield and planet canvas, then cursor parallax and scroll behavior. Last because it is the most work and purely decorative.
+6. Sky (5 to 7 h) — Split into: 6a ✓ starfield canvas (dark mode only, hidden in light; perf guards + astro:page-load hook for client-router nav), 6b planet (dark) + sun (light) with gradient sky background in light mode, 6c cursor + scroll parallax applied to both variants, 6d wire the CommandDeck control strip toggles (stars/spin/cursor). New palette tokens come in 6b: --sky-top / --sky-bottom (light mode gradient), --sun-core / --sun-corona (always warm).
 After phase 6, run the quality checklist below before sharing the link widely.
 
 Bug fixes bundled into phases 1–3 (worth remembering next time):
@@ -133,7 +133,7 @@ Taskfile.yml at the repo root wraps the pnpm commands — same convention as tac
 CI/CD. GitHub Actions runs `task check` and `task build` on every push and PR, so a broken content schema or type error fails fast before the host picks it up. Deploys stay on the host side (Vercel/Netlify/Cloudflare auto-deploy on push to main, plus PR previews), so the workflow stays single-purpose and the deploy credentials live only in one place.
 Quality checklist
 The effects should never cost readability, speed, or access. Check these before launch.
-[ ] Reduced motion: stars and planet hold still, marquee becomes a static list, terminal shows text instantly, cursor follow is off
+[ ] Reduced motion: stars/planet/sun hold still, marquee becomes a static list, terminal shows text instantly, cursor follow is off
 [ ] Keyboard: every pill, card, switch, and button is reachable with a visible focus ring; duplicate marquee pills are skipped
 [ ] Contrast: body and muted text pass WCAG AA in both modes, including over the starfield
 [ ] Mobile at 390 px: planet shrinks to the corner, deck stacks, terminal text doesn't wrap awkwardly, nothing scrolls sideways
