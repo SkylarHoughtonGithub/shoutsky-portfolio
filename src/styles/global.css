@@ -55,6 +55,8 @@
     --term-bg:     #0c110e;
     --term-header: #121a15;
     --term-border: #1f2a23;
+    --term-text:   #e4f2e9;
+    --term-muted:  #8aa595;
 
     /* --- glow multiplier (subtle in light) --- */
     --glow: 0.35;
@@ -340,6 +342,117 @@ input[type='search']::-moz-search-cancel-button { display: none; }
 
 .neon-text-glow {
   text-shadow: 0 0 calc(16px * var(--glow)) color-mix(in srgb, var(--neon) 80%, transparent);
+}
+
+/* ===== Project Card ===== */
+.project-card {
+  display: block;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease,
+    opacity 0.3s ease,
+    filter 0.3s ease;
+}
+
+.project-card:hover,
+.project-card:focus-visible {
+  border-color: color-mix(in srgb, var(--neon) 35%, transparent);
+  box-shadow:
+    0 0 calc(24px * var(--glow)) color-mix(in srgb, var(--neon) 45%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--neon) 25%, transparent);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.project-card.filtered-out {
+  opacity: 0.3;
+  filter: saturate(0.3);
+}
+
+.project-card.filtered-out:hover,
+.project-card.filtered-out:focus-visible {
+  opacity: 0.7;
+  filter: saturate(0.7);
+}
+
+/* ===== Projects filter banner ===== */
+.filter-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.6rem 0.9rem;
+  margin: 0 0 1rem;
+  border: 1px solid color-mix(in srgb, var(--neon) 30%, transparent);
+  border-radius: 0.4rem;
+  background: color-mix(in srgb, var(--neon) 6%, var(--panel));
+  box-shadow: 0 0 calc(16px * var(--glow)) color-mix(in srgb, var(--neon) 18%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.filter-banner-label {
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}
+
+.filter-banner-tag {
+  color: var(--neon);
+  text-shadow: 0 0 calc(10px * var(--glow)) color-mix(in srgb, var(--neon) 60%, transparent);
+  letter-spacing: 0.06em;
+}
+
+.filter-banner-count {
+  color: var(--muted);
+  font-size: 0.7rem;
+  margin-left: auto;
+}
+
+.filter-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 0.3rem;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.filter-clear:hover,
+.filter-clear:focus-visible {
+  color: var(--neon2);
+  border-color: color-mix(in srgb, var(--neon) 45%, transparent);
+  box-shadow: 0 0 calc(10px * var(--glow)) color-mix(in srgb, var(--neon) 40%, transparent);
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card { transition: none; }
+  .project-card:hover,
+  .project-card:focus-visible { transform: none; }
+}
+
+/* ===== Code Block Frames (terminal bay look) ===== */
+.expressive-code .frame {
+  border: 1px solid var(--term-border);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0 calc(12px * var(--glow)) color-mix(in srgb, var(--neon) 18%, transparent);
 }
 
 /* ===== Heading Anchor Links ===== */

@@ -20,14 +20,23 @@ const statusLabel: Record<string, string> = {
   <div class="relative z-[1] py-8 pb-10">
     <div class="px-6 sm:px-8">
       <PageTitle {title} {introduce} />
+      <div class="filter-banner" data-filter-banner hidden role="status" aria-live="polite">
+        <span class="filter-banner-label">Filtered by</span>
+        <span class="filter-banner-tag" data-filter-tag></span>
+        <span class="filter-banner-count" data-filter-count></span>
+        <a href="/projects" class="filter-clear" aria-label="Clear filter">
+          <span>Clear</span>
+          <span aria-hidden="true">×</span>
+        </a>
+      </div>
     </div>
     <div class="grid grid-cols-1 fade-up">
       {
         projects.map((project, index) => (
-          <div>
+          <div data-project-card data-tags={project.data.tags.join(',')}>
             <a
               href={`/projects/${project.id}`}
-              class="group relative block hover:bg-muted/30 dark:hover:bg-muted/30 transition-colors duration-300 px-6 sm:px-8 py-5"
+              class="project-card group relative block hover:bg-muted/30 dark:hover:bg-muted/30 px-6 sm:px-8 py-5"
             >
               <div class="flex items-start justify-between gap-4 mb-2">
                 <h2 class="font-semibold text-xl tracking-tight group-hover:text-primary transition-colors">
@@ -60,3 +69,32 @@ const statusLabel: Record<string, string> = {
     </div>
   </div>
 </Layout>
+
+<script>
+  const params = new URLSearchParams(window.location.search)
+  const tag = params.get('tag')
+  if (tag) {
+    const banner = document.querySelector<HTMLElement>('[data-filter-banner]')
+    const tagEl = document.querySelector<HTMLElement>('[data-filter-tag]')
+    const countEl = document.querySelector<HTMLElement>('[data-filter-count]')
+    const cards = document.querySelectorAll<HTMLElement>('[data-project-card]')
+    const normalized = tag.trim().toLowerCase()
+
+    let matches = 0
+    cards.forEach((card) => {
+      const cardTags = (card.dataset.tags ?? '').split(',').map((t) => t.trim().toLowerCase())
+      const match = cardTags.includes(normalized)
+      if (match) matches += 1
+      const link = card.querySelector('.project-card')
+      if (!match) link?.classList.add('filtered-out')
+    })
+
+    if (banner && tagEl) {
+      tagEl.textContent = tag
+      banner.hidden = false
+      if (countEl) {
+        countEl.textContent = `${matches} of ${cards.length} match`
+      }
+    }
+  }
+</script>
