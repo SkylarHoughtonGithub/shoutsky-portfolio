@@ -1,6 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions'
-import { ANALYTICS_CONFIG, SITE } from '~/config'
+import { SITE } from '~/config'
 
 type Props = {
   title: string
@@ -36,12 +36,8 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
 <meta name="color-scheme" content="light dark" />
 
 <!-- icon -->
-<link rel="icon" href="/favicon.ico" sizes="32x32" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-
-{/* RSS Feed Link */}
-<link rel="alternate" type="application/rss+xml" title={SITE.title} href={new URL('/rss.xml', Astro.site).href} />
+<link rel="icon" type="image/png" href="/logo.png" />
+<link rel="apple-touch-icon" href="/logo.png" />
 
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 
@@ -73,35 +69,5 @@ const ogImage = new URL(image || SITE.ogImage, Astro.url)
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={ogImage} />
-
-
-{
-  ANALYTICS_CONFIG.umami?.enabled && (
-    <script
-      is:inline
-      defer
-      src={ANALYTICS_CONFIG.umami.serverUrl}
-      data-website-id={ANALYTICS_CONFIG.umami.websiteId}
-    ></script>
-  )
-}
-{
-  ANALYTICS_CONFIG.vercount?.enabled && (
-    <script is:inline defer src="https://events.vercount.one/js" data-astro-rerun></script>
-  )
-}
-{
-  ANALYTICS_CONFIG.google?.enabled && (
-    <>
-      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ANALYTICS_CONFIG.google.id}`}></script>
-      <script is:inline define:vars={{ id: ANALYTICS_CONFIG.google.id }}>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', id);
-      </script>
-    </>
-  )
-}
 
 <ClientRouter fallback="swap" />

@@ -13,10 +13,10 @@ export interface RadarBlip {
 }
 
 const STATUS_LABEL: Record<string, string> = {
-  shipped: 'Shipped',
+  'shipped': 'Shipped',
   'in-progress': 'In progress',
-  paused: 'Paused',
-  archived: 'Archived',
+  'paused': 'Paused',
+  'archived': 'Archived',
 }
 
 export interface Props {
@@ -29,11 +29,11 @@ const defaultLines: TerminalLine[] = [
   { prompt: '$', text: 'whoami', kind: 'cmd' },
   { text: 'skylar.houghton', kind: 'out' },
   { prompt: '$', text: 'cat ./role.txt', kind: 'cmd' },
-  { text: 'backend & infrastructure engineer', kind: 'out' },
+  { text: 'platform engineer', kind: 'out' },
   { prompt: '$', text: 'ls ~/stack', kind: 'cmd' },
-  { text: 'python/  go/  typescript/  docker/  kubernetes/  terraform/  ansible/', kind: 'out' },
+  { text: 'python/  go/  typescript/  aws/  kubernetes/  crossplane/  terraform/', kind: 'out' },
   { prompt: '$', text: 'cat ./status.txt', kind: 'cmd' },
-  { text: 'open to backend / platform / SRE roles', kind: 'out' },
+  { text: 'open to platform / backend / SRE roles', kind: 'out' },
 ]
 
 const { lines = defaultLines, title = 'command deck', blips = [] } = Astro.props
@@ -70,12 +70,14 @@ const positionedBlips = blips.map((blip, i) => {
   <div class="deck-bays">
     <div class="bay bay-terminal" data-bay="terminal">
       <ol class="term-lines">
-        {lines.map((line) => (
-          <li class:list={['term-line', line.kind === 'out' ? 'is-out' : 'is-cmd']}>
-            {line.prompt && <span class="term-prompt">{line.prompt}</span>}
-            <span class="term-text">{line.text}</span>
-          </li>
-        ))}
+        {
+          lines.map((line) => (
+            <li class:list={['term-line', line.kind === 'out' ? 'is-out' : 'is-cmd']}>
+              {line.prompt && <span class="term-prompt">{line.prompt}</span>}
+              <span class="term-text">{line.text}</span>
+            </li>
+          ))
+        }
       </ol>
       <span class="term-cursor" aria-hidden="true"></span>
     </div>
@@ -84,32 +86,34 @@ const positionedBlips = blips.map((blip, i) => {
       <div class="radar" role={positionedBlips.length ? 'list' : 'presentation'} aria-label="Featured projects">
         <div class="radar-grid" aria-hidden="true"></div>
         <div class="radar-sweep" aria-hidden="true"></div>
-        {positionedBlips.length === 0 ? (
-          <span class="radar-placeholder">no featured projects</span>
-        ) : (
-          <div class="radar-blips">
-            {positionedBlips.map((blip) => (
-              <a
-                href={`/projects/${blip.slug}`}
-                class:list={['radar-blip', `is-${blip.status ?? 'shipped'}`, blip.tooltipAbove && 'tooltip-above']}
-                style={`--x:${blip.x}%;--y:${blip.y}%;--ping-delay:${blip.pingDelay}s`}
-                role="listitem"
-              >
-                <span class="radar-blip-dot" aria-hidden="true"></span>
-                <span class="radar-blip-card">
-                  <span class="radar-blip-name">{blip.name}</span>
-                  {blip.description && <span class="radar-blip-desc">{blip.description}</span>}
-                  {blip.status && (
-                    <span class:list={['radar-blip-status', `is-${blip.status}`]}>
-                      <span class="radar-blip-status-dot" aria-hidden="true"></span>
-                      {STATUS_LABEL[blip.status]}
-                    </span>
-                  )}
-                </span>
-              </a>
-            ))}
-          </div>
-        )}
+        {
+          positionedBlips.length === 0 ? (
+            <span class="radar-placeholder">no featured projects</span>
+          ) : (
+            <div class="radar-blips">
+              {positionedBlips.map((blip) => (
+                <a
+                  href={`/projects/${blip.slug}`}
+                  class:list={['radar-blip', `is-${blip.status ?? 'shipped'}`, blip.tooltipAbove && 'tooltip-above']}
+                  style={`--x:${blip.x}%;--y:${blip.y}%;--ping-delay:${blip.pingDelay}s`}
+                  role="listitem"
+                >
+                  <span class="radar-blip-dot" aria-hidden="true" />
+                  <span class="radar-blip-card">
+                    <span class="radar-blip-name">{blip.name}</span>
+                    {blip.description && <span class="radar-blip-desc">{blip.description}</span>}
+                    {blip.status && (
+                      <span class:list={['radar-blip-status', `is-${blip.status}`]}>
+                        <span class="radar-blip-status-dot" aria-hidden="true" />
+                        {STATUS_LABEL[blip.status]}
+                      </span>
+                    )}
+                  </span>
+                </a>
+              ))}
+            </div>
+          )
+        }
       </div>
     </div>
   </div>
@@ -258,9 +262,15 @@ const positionedBlips = blips.map((blip, i) => {
     color: var(--term-muted);
   }
 
-  .deck-dots { display: flex; gap: 0.375rem; }
+  .deck-dots {
+    display: flex;
+    gap: 0.375rem;
+  }
   .deck-dots > span {
-    width: 0.6rem; height: 0.6rem; border-radius: 999px; background: #3a4a40;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 999px;
+    background: #3a4a40;
   }
 
   .deck-title {
@@ -281,15 +291,22 @@ const positionedBlips = blips.map((blip, i) => {
   }
 
   .deck-status-pulse {
-    width: 0.45rem; height: 0.45rem; border-radius: 999px;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 999px;
     background: var(--term-ok);
     box-shadow: 0 0 calc(8px * var(--glow)) color-mix(in srgb, var(--term-ok) 80%, transparent);
     animation: deck-pulse 2.4s ease-in-out infinite;
   }
 
   @keyframes deck-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
   }
 
   .deck-bays {
@@ -300,7 +317,9 @@ const positionedBlips = blips.map((blip, i) => {
   }
 
   @media (max-width: 640px) {
-    .deck-bays { grid-template-columns: 1fr; }
+    .deck-bays {
+      grid-template-columns: 1fr;
+    }
   }
 
   .bay {
@@ -311,6 +330,14 @@ const positionedBlips = blips.map((blip, i) => {
 
   .bay-terminal {
     position: relative;
+    overflow-x: auto;
+  }
+
+  .bay-terminal::-webkit-scrollbar {
+    height: 4px;
+  }
+  .bay-terminal {
+    scrollbar-width: thin;
   }
 
   .term-lines {
@@ -327,7 +354,9 @@ const positionedBlips = blips.map((blip, i) => {
     gap: 0.6rem;
     opacity: 0;
     transform: translateY(-2px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
   }
 
   .term-line.is-revealed {
@@ -341,7 +370,9 @@ const positionedBlips = blips.map((blip, i) => {
     user-select: none;
   }
 
-  .term-line.is-cmd .term-text { color: var(--term-cmd); }
+  .term-line.is-cmd .term-text {
+    color: var(--term-cmd);
+  }
   .term-line.is-out .term-text {
     color: var(--term-text);
     padding-left: 1rem;
@@ -360,8 +391,14 @@ const positionedBlips = blips.map((blip, i) => {
   }
 
   @keyframes deck-cursor-blink {
-    0%, 50% { opacity: 1; }
-    51%, 100% { opacity: 0; }
+    0%,
+    50% {
+      opacity: 1;
+    }
+    51%,
+    100% {
+      opacity: 0;
+    }
   }
 
   .bay-radar {
@@ -372,7 +409,10 @@ const positionedBlips = blips.map((blip, i) => {
   }
 
   @media (max-width: 640px) {
-    .bay-radar { border-left: none; border-top: 1px solid var(--term-border); }
+    .bay-radar {
+      border-left: none;
+      border-top: 1px solid var(--term-border);
+    }
   }
 
   .radar {
@@ -393,8 +433,18 @@ const positionedBlips = blips.map((blip, i) => {
       radial-gradient(circle, transparent 24.5%, color-mix(in srgb, var(--term-muted) 22%, transparent) 25%, transparent 25.5%),
       radial-gradient(circle, transparent 49.5%, color-mix(in srgb, var(--term-muted) 22%, transparent) 50%, transparent 50.5%),
       radial-gradient(circle, transparent 74.5%, color-mix(in srgb, var(--term-muted) 22%, transparent) 75%, transparent 75.5%),
-      linear-gradient(to right, transparent calc(50% - 0.5px), color-mix(in srgb, var(--term-muted) 18%, transparent) 50%, transparent calc(50% + 0.5px)),
-      linear-gradient(to bottom, transparent calc(50% - 0.5px), color-mix(in srgb, var(--term-muted) 18%, transparent) 50%, transparent calc(50% + 0.5px));
+      linear-gradient(
+        to right,
+        transparent calc(50% - 0.5px),
+        color-mix(in srgb, var(--term-muted) 18%, transparent) 50%,
+        transparent calc(50% + 0.5px)
+      ),
+      linear-gradient(
+        to bottom,
+        transparent calc(50% - 0.5px),
+        color-mix(in srgb, var(--term-muted) 18%, transparent) 50%,
+        transparent calc(50% + 0.5px)
+      );
   }
 
   .radar-sweep {
@@ -414,8 +464,12 @@ const positionedBlips = blips.map((blip, i) => {
   }
 
   @keyframes radar-sweep {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .radar-blips {
@@ -457,10 +511,22 @@ const positionedBlips = blips.map((blip, i) => {
   }
 
   @keyframes radar-blip-ping {
-    0%   { opacity: 0.9; transform: scale(1.25); }
-    15%  { opacity: 0.75; transform: scale(1.1); }
-    40%  { opacity: 0.5; transform: scale(1); }
-    100% { opacity: 0.45; transform: scale(1); }
+    0% {
+      opacity: 0.9;
+      transform: scale(1.25);
+    }
+    15% {
+      opacity: 0.75;
+      transform: scale(1.1);
+    }
+    40% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0.45;
+      transform: scale(1);
+    }
   }
 
   .radar-blip.is-shipped .radar-blip-dot {
@@ -510,7 +576,9 @@ const positionedBlips = blips.map((blip, i) => {
   }
 
   .radar-blip:hover .radar-blip-card,
-  .radar-blip:focus-visible .radar-blip-card { opacity: 1; }
+  .radar-blip:focus-visible .radar-blip-card {
+    opacity: 1;
+  }
 
   .radar-blip-name {
     color: var(--term-cmd);
@@ -538,10 +606,17 @@ const positionedBlips = blips.map((blip, i) => {
   }
 
   .radar-blip-status-dot {
-    width: 0.35rem; height: 0.35rem; border-radius: 999px; background: var(--term-muted);
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 999px;
+    background: var(--term-muted);
   }
-  .radar-blip-status.is-shipped .radar-blip-status-dot { background: var(--term-ok); }
-  .radar-blip-status.is-in-progress .radar-blip-status-dot { background: var(--neon); }
+  .radar-blip-status.is-shipped .radar-blip-status-dot {
+    background: var(--term-ok);
+  }
+  .radar-blip-status.is-in-progress .radar-blip-status-dot {
+    background: var(--neon);
+  }
 
   .radar-placeholder {
     position: absolute;
@@ -610,12 +685,20 @@ const positionedBlips = blips.map((blip, i) => {
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .term-line { transition: none; }
+    .term-line {
+      transition: none;
+    }
     .term-cursor,
     .deck-status-pulse,
     .radar-sweep,
-    .radar-blip-dot { animation: none; }
-    .radar-sweep { opacity: 0.25; }
-    .radar-blip-dot { opacity: 0.75; }
+    .radar-blip-dot {
+      animation: none;
+    }
+    .radar-sweep {
+      opacity: 0.25;
+    }
+    .radar-blip-dot {
+      opacity: 0.75;
+    }
   }
 </style>

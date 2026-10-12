@@ -12,22 +12,22 @@
   --font-sans: var(--font-body);
   --font-mono: var(--font-code);
 
-  --color-border:              var(--line);
-  --color-ring:                var(--neon);
-  --color-background:          var(--bg);
-  --color-foreground:          var(--text);
-  --color-primary:             var(--neon);
-  --color-primary-foreground:  var(--bg);
-  --color-accent:              var(--panel);
-  --color-accent-foreground:   var(--text);
-  --color-muted:               var(--panel);
-  --color-muted-foreground:    var(--muted);
-  --color-tag-bg:              var(--tag-bg);
-  --color-tag-bg-hover:        var(--tag-bg-hover);
-  --color-tag-border:          var(--tag-border);
-  --color-tag-text:            var(--tag-text);
-  --color-scrollbar:           var(--line);
-  --color-scrollbar-bg:        var(--bg);
+  --color-border: var(--line);
+  --color-ring: var(--neon);
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --color-primary: var(--neon);
+  --color-primary-foreground: var(--bg);
+  --color-accent: var(--panel);
+  --color-accent-foreground: var(--text);
+  --color-muted: var(--panel);
+  --color-muted-foreground: var(--muted);
+  --color-tag-bg: var(--tag-bg);
+  --color-tag-bg-hover: var(--tag-bg-hover);
+  --color-tag-border: var(--tag-border);
+  --color-tag-text: var(--tag-text);
+  --color-scrollbar: var(--line);
+  --color-scrollbar-bg: var(--bg);
 }
 
 /* ===== Colour Variables ===== */
@@ -35,43 +35,43 @@
   :root {
     /* --- fonts --- */
     --font-heading: 'Chakra Petch', system-ui, sans-serif;
-    --font-body:    'IBM Plex Sans', system-ui, sans-serif;
-    --font-code:    'JetBrains Mono', 'Fira Code', monospace;
+    --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+    --font-code: 'JetBrains Mono', 'Fira Code', monospace;
 
     /* --- light palette --- */
-    --bg:       #edf4ef;
-    --panel:    #ffffff;
-    --line:     #cddfd3;
-    --text:     #13221a;
-    --muted:    #4f6658;
-    --neon:     #15803d;
-    --neon2:    #0f766e;
+    --bg: #edf4ef;
+    --panel: #ffffff;
+    --line: #cddfd3;
+    --text: #13221a;
+    --muted: #4f6658;
+    --neon: #15803d;
+    --neon2: #0f766e;
 
     /* --- light-mode sky gradient (dawn → pale mint) --- */
-    --sky-top:    #cfe3ff;
+    --sky-top: #cfe3ff;
     --sky-bottom: #edf4ef;
 
     /* --- sun (always warm; only shows in light mode) --- */
-    --sun-core:   #fff8dc;
+    --sun-core: #fff8dc;
     --sun-corona: #ffd98a;
 
     /* --- terminal surface (light defaults; .dark overrides below) --- */
-    --term-bg:     #f6f9f3;
+    --term-bg: #f6f9f3;
     --term-header: #e8efe8;
     --term-border: #c7d7ca;
-    --term-text:   #152319;
-    --term-muted:  #6a8072;
-    --term-cmd:    #0d7a3f;
-    --term-ok:     #5a8a1a;
+    --term-text: #152319;
+    --term-muted: #566b5c;
+    --term-cmd: #0d7a3f;
+    --term-ok: #5a8a1a;
 
     /* --- glow multiplier (subtle in light) --- */
     --glow: 0.35;
 
     /* --- tag system --- */
-    --tag-bg:       #e3f0e8;
+    --tag-bg: #e3f0e8;
     --tag-bg-hover: #d4e8db;
-    --tag-border:   #cddfd3;
-    --tag-text:     #4f6658;
+    --tag-border: #cddfd3;
+    --tag-text: #4f6658;
 
     /* --- layout --- */
     --layout-width: 48rem;
@@ -80,7 +80,9 @@
   }
 
   @media (min-width: 136rem) {
-    :root { --layout-width: 56rem; }
+    :root {
+      --layout-width: 56rem;
+    }
   }
 
   .global-layout-width {
@@ -89,28 +91,28 @@
 
   /* --- dark palette --- */
   .dark {
-    --bg:       #000000;
-    --panel:    #080f0b;
-    --line:     #1e2e24;
-    --text:     #e4f2e9;
-    --muted:    #8aa595;
-    --neon:     #4ade80;
-    --neon2:    #5eead4;
-    --glow:     1;
+    --bg: #000000;
+    --panel: #080f0b;
+    --line: #1e2e24;
+    --text: #e4f2e9;
+    --muted: #8aa595;
+    --neon: #4ade80;
+    --neon2: #5eead4;
+    --glow: 1;
 
-    --tag-bg:       #0f1c14;
+    --tag-bg: #0f1c14;
     --tag-bg-hover: #162419;
-    --tag-border:   #1e2e24;
-    --tag-text:     #8aa595;
+    --tag-border: #1e2e24;
+    --tag-text: #8aa595;
 
     /* --- terminal surface overrides for dark mode --- */
-    --term-bg:     #0c110e;
+    --term-bg: #0c110e;
     --term-header: #121a15;
     --term-border: #1f2a23;
-    --term-text:   #e4f2e9;
-    --term-muted:  #8aa595;
-    --term-cmd:    #6ee7a0;
-    --term-ok:     #bef264;
+    --term-text: #e4f2e9;
+    --term-muted: #8aa595;
+    --term-cmd: #6ee7a0;
+    --term-ok: #bef264;
   }
 }
 
@@ -139,7 +141,12 @@
     background: transparent;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-heading);
     @apply font-medium;
   }
@@ -169,20 +176,34 @@
   }
 
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(2rem); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(2rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  .animation-delay-100 { animation-delay: 100ms; }
-  .animation-delay-150 { animation-delay: 150ms; }
-  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+  .animation-delay-150 {
+    animation-delay: 150ms;
+  }
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
 
   html.disable-transition *:not(html) {
     transition: none !important;
   }
 
   @supports (-webkit-hyphens: none) {
-    .safari-hidden { display: none; }
+    .safari-hidden {
+      display: none;
+    }
   }
 }
 
@@ -210,13 +231,21 @@ html.theme-to-light::view-transition-new(theme-transition) {
 }
 
 @keyframes theme-reveal-down {
-  from { clip-path: inset(0 0 100% 0); }
-  to   { clip-path: inset(0 0 0% 0); }
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0% 0);
+  }
 }
 
 @keyframes theme-reveal-up {
-  from { clip-path: inset(100% 0 0 0); }
-  to   { clip-path: inset(0% 0 0 0); }
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0% 0 0 0);
+  }
 }
 
 /* ===== Scrollbar Styles ===== */
@@ -227,9 +256,14 @@ html.theme-to-light::view-transition-new(theme-transition) {
   }
 }
 
-::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
 
-::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-track {
+  background: transparent;
+}
 
 ::-webkit-scrollbar-thumb {
   background-color: color-mix(in srgb, var(--line) 40%, transparent);
@@ -250,20 +284,35 @@ pre::-webkit-scrollbar-thumb:hover {
   background-color: color-mix(in srgb, var(--text) 40%, transparent);
 }
 
-.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
-.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
 /* ===== Search Styles ===== */
 #search-input::-webkit-search-decoration,
 #search-input::-webkit-search-cancel-button,
 #search-input::-webkit-search-results-button,
-#search-input::-webkit-search-results-decoration { -webkit-appearance: none; }
+#search-input::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
 
-#search-input::-ms-clear { display: none; width: 0; height: 0; }
+#search-input::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
 
-input[type='search']::-moz-search-cancel-button { display: none; }
+input[type='search']::-moz-search-cancel-button {
+  display: none;
+}
 
-#search-results { padding: 0.25rem; }
+#search-results {
+  padding: 0.25rem;
+}
 
 .search-results-item {
   display: block;
@@ -275,8 +324,12 @@ input[type='search']::-moz-search-cancel-button { display: none; }
     color 0.18s ease;
 }
 
-.search-results-item:not(.sub-result) + .search-results-item:not(.sub-result) { margin-top: 0.375rem; }
-.search-results-item.sub-result + .search-results-item:not(.sub-result)       { margin-top: 0.5rem; }
+.search-results-item:not(.sub-result) + .search-results-item:not(.sub-result) {
+  margin-top: 0.375rem;
+}
+.search-results-item.sub-result + .search-results-item:not(.sub-result) {
+  margin-top: 0.5rem;
+}
 
 .search-results-item:hover {
   background-color: color-mix(in srgb, var(--panel) 60%, transparent);
@@ -288,7 +341,9 @@ input[type='search']::-moz-search-cancel-button { display: none; }
   background-color: color-mix(in srgb, var(--panel) 70%, transparent);
 }
 
-.search-results-item:active { transform: scale(0.997); }
+.search-results-item:active {
+  transform: scale(0.997);
+}
 
 .search-results-item.sub-result {
   padding-left: 1.25rem;
@@ -310,7 +365,9 @@ input[type='search']::-moz-search-cancel-button { display: none; }
   overflow: hidden;
 }
 
-.search-results-item:hover .search-results-title { color: var(--neon); }
+.search-results-item:hover .search-results-title {
+  color: var(--neon);
+}
 
 .search-results-item.sub-result .search-results-title {
   font-weight: 500;
@@ -341,19 +398,35 @@ input[type='search']::-moz-search-cancel-button { display: none; }
 }
 
 @keyframes searchPanelShow {
-  0%   { opacity: 0; transform: translate(0%, -2rem); }
-  100% { opacity: 1; transform: translate(0%, 0); }
+  0% {
+    opacity: 0;
+    transform: translate(0%, -2rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0%, 0);
+  }
 }
 
 /* ===== Utilities ===== */
-.perspective-1000 { perspective: 1000px; }
-
-@keyframes slide-down {
-  0%   { opacity: 0; transform: translateY(-10px); }
-  100% { opacity: 1; transform: translateY(0px); }
+.perspective-1000 {
+  perspective: 1000px;
 }
 
-.animate-slide-down { animation: slide-down 0.3s ease-out forwards; }
+@keyframes slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.3s ease-out forwards;
+}
 
 /* ===== Neon Glow Helper ===== */
 .neon-glow {
@@ -462,9 +535,13 @@ input[type='search']::-moz-search-cancel-button { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .project-card { transition: none; }
+  .project-card {
+    transition: none;
+  }
   .project-card:hover,
-  .project-card:focus-visible { transform: none; }
+  .project-card:focus-visible {
+    transform: none;
+  }
 }
 
 /* ===== Code Block Frames (terminal bay look) ===== */
@@ -474,7 +551,6 @@ input[type='search']::-moz-search-cancel-button { display: none; }
   overflow: hidden;
   box-shadow: 0 0 calc(12px * var(--glow)) color-mix(in srgb, var(--neon) 18%, transparent);
 }
-
 
 /* ===== Heading Anchor Links ===== */
 .header-anchor {

@@ -17,14 +17,14 @@ Running personal infrastructure as a pile of ad-hoc shell scripts is fine until 
 
 A full self-hosted platform spread across a handful of repos, each one a distinct layer of the stack:
 
-| Layer           | Repo                              | Role                                             |
-|-----------------|-----------------------------------|--------------------------------------------------|
-| Image           | `skylab-packer`                   | Packer templates for base OS images              |
-| Infrastructure  | `skylab-terraform`                | Terraform modules for compute, network, storage  |
-| Configuration   | `skylab-ansible`                  | Ansible roles & playbooks for host configuration |
-| Delivery (CD)   | `skylab-argo-root` / `-workloads` | ArgoCD GitOps for Kubernetes workloads           |
-| Bootstrap       | `skylab-argo-bootstrap`           | Repeatable cluster + ArgoCD bootstrap            |
-| Workloads       | `shoutsky-images`                 | Custom container images + Kustomize manifests    |
+| Layer           | Repo                                    | Role                                                                          |
+| --------------- | --------------------------------------- | ----------------------------------------------------------------------------- |
+| Image           | `skylab-packer`                         | Packer templates for base OS images                                           |
+| Infrastructure  | `skylab-terraform`                      | Terraform modules for compute, network, storage                               |
+| Configuration   | `skylab-ansible`                        | Ansible roles & playbooks for host configuration                              |
+| Delivery (CD)   | `skylab-argo-root` / `-workloads`       | ArgoCD GitOps for Kubernetes workloads                                        |
+| Bootstrap       | `skylab-argo-bootstrap`                 | Repeatable cluster + ArgoCD bootstrap                                         |
+| Workloads       | `shoutsky-images`                       | Custom container images + Kustomize manifests                                 |
 | Service catalog | `skylab-backstage-catalog` / `-configs` | Backstage software templates for self-service EKS provisioning via Crossplane |
 
 Each layer owns one job, and the handoffs are explicit. Packer produces images; Terraform consumes them; Ansible configures what Terraform can't; ArgoCD takes over inside the cluster and syncs the workload layer out of `shoutsky-images`; Backstage sits on top as a service catalog.

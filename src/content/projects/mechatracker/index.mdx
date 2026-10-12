@@ -44,16 +44,15 @@ func (h *Handler) CreateRepairFromTemplate(w http.ResponseWriter, r *http.Reques
 
 ```ts
 // web — same shape, auto-generated, used in a React Query hook
-import type { paths } from "@/lib/api/schema";
-type CreateReq = paths["/v1/repairs"]["post"]["requestBody"]["content"]["application/json"];
-type RepairCard = paths["/v1/repairs"]["post"]["responses"]["201"]["content"]["application/json"];
+import type { paths } from '@/lib/api/schema'
+type CreateReq = paths['/v1/repairs']['post']['requestBody']['content']['application/json']
+type RepairCard = paths['/v1/repairs']['post']['responses']['201']['content']['application/json']
 
-export const useCreateRepair = () =>
-  useMutation({ mutationFn: (body: CreateReq) => api.POST("/v1/repairs", { body }) });
+export const useCreateRepair = () => useMutation({ mutationFn: (body: CreateReq) => api.POST('/v1/repairs', { body }) })
 ```
 
 ## Where it stands
 
 The backend, web shell, mobile scaffold, and infrastructure are all in place. Progress stalled during the Clerk auth integration — custom JWT verification in the Go middleware plus session handoff into Expo turned into a longer rabbit hole than I'd planned for. The project is paused rather than abandoned; picking it back up is on the list once the auth design is settled.
 
-*The repo is private.*
+_The repo is private._

@@ -1,0 +1,63 @@
+---
+name: 'portfolio'
+description: 'This site. Astro + custom Litos theme fork rebuilt as a command-deck hero with a canvas starfield, SVG planet, radar of featured projects, and a mode-adaptive terminal palette.'
+githubUrl: 'https://github.com/SkylarHoughtonGithub/shoutsky-portfolio'
+type: 'text'
+tags: ['TypeScript', 'Astro', 'GitHub Actions', 'Task']
+featured: true
+date: 2026-10-11
+status: 'shipped'
+---
+
+## The problem
+
+My previous site was a Hugo install sprinting past its original scope — theme overrides were painful, every new idea meant fighting the template, and the output was starting to feel generic. I wanted a portfolio that actually looked like something I'd build at work: component-based, typed, with real state management for interactive bits, and honest about what's shipped vs. in-progress.
+
+## What I built
+
+A statically-generated Astro site that boots off the free Litos theme and extends it into a green, space-themed "command deck." Three sections, two visual modes, zero backend.
+
+**Hero** — a bordered deck with traffic-light frame dots, a typed terminal that fades in line by line (`whoami`, role, stack, status), a radar bay whose blips are the featured projects (sweep-synced ping, hover opens a mini-card with description + status chip, click goes to the detail page), and a control strip with live glow / theme / stars / spin / cursor toggles persisted to localStorage.
+
+**Marquee + featured strip** — two rows of tech-stack chips scrolling in opposite directions; tapping one navigates to `/projects?tag=<name>` where a tiny client script reads the URL, dims non-matching cards (hover restores partial opacity so they stay clickable), and shows a filter banner with "N of M match" + a Clear link.
+
+**Background** — a canvas starfield at three visual depths with twinkle, a ringed SVG planet with feTurbulence continent texture + 8-ring Saturn-style spread, cursor parallax (planet's lit side follows the pointer via live SVG gradient `cx`/`cy` updates), and scroll parallax. In light mode the whole surface swaps to a pale-blue → pale-mint gradient sky with a warm sun in the same slot.
+
+## A decision I'd defend
+
+The terminal surfaces used to stay dark in both color modes — I liked how it tied the aesthetic together. The user feedback was correct: against a daytime sky background, a hard-cornered black deck is jarring, not stylish. I added a second Expressive Code theme and promoted the terminal palette tokens (`--term-bg` / `--term-text` / etc.) from always-dark to mode-adaptive, with WCAG-AA-passing dark-green syntax colors for light mode:
+
+```ts
+// ec.config.mjs — two paired themes, wired via themeCssSelector
+themes: [commandDeckDark, commandDeckLight],
+themeCssSelector: (theme) =>
+  theme.name === 'command-deck-dark' ? '.dark' : ':root:not(.dark)',
+```
+
+```css
+/* global.css — light defaults in :root, dark overrides under .dark */
+:root {
+  --term-bg: #f6f9f3;
+  --term-text: #152319;
+  --term-muted: #566b5c;
+  --term-cmd: #0d7a3f;
+}
+.dark {
+  --term-bg: #0c110e;
+  --term-text: #e4f2e9;
+  --term-muted: #8aa595;
+  --term-cmd: #6ee7a0;
+}
+```
+
+Everything downstream — the CommandDeck frame, control-strip buttons, radar labels, code-block chrome — reads from these variables and swaps automatically on theme toggle. One palette source, two coherent surfaces.
+
+## Lessons learned
+
+The hardest bugs were cache-related, not code-related. Astro's `ClientRouter` does client-side navigation, so a `<script>` in a component only runs once per full reload — every interactive piece (CommandDeck toggles, Sky canvas, project tag filter) needed an `astro:page-load` boot pattern with proper cleanup on `astro:before-swap` or it would die on first navigation. Expressive Code caches generated themes in `.astro/`, which survives `node_modules` deletion — chasing a "pale text" bug in light mode cost me a half-hour before I thought to nuke the project-root cache.
+
+The second lesson: honest status beats aspirational copy. Marking mechatracker as `paused` (dim gray radar blip, no glow) instead of hiding it or faking "in progress" makes the whole site read as more trustworthy. The radar is a status board as much as a navigation element.
+
+## Stack
+
+Astro 6 + Tailwind 4 + Expressive Code for the syntax theming, deployed to GitHub Pages via Actions on push to `main`, custom domain via `CNAME` in `public/`. No analytics — if you want to reach me, use the email link.

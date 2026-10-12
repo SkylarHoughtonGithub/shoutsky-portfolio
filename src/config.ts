@@ -1,23 +1,10 @@
-import type {
-  AnalyticsConfig,
-  CommentConfig,
-  GithubConfig,
-  Link,
-  PhotosConfig,
-  PostConfig,
-  ProjectConfig,
-  Site,
-  SkillsShowcaseConfig,
-  SocialLink,
-  TagsConfig,
-} from '~/types'
+import type { Link, ProjectConfig, Site, SkillsShowcaseConfig, SocialLink } from '~/types'
 
 //--- Site Config ---
 export const SITE: Site = {
   title: 'Skylar Houghton',
-  description:
-    'Backend & infrastructure engineer. I build reliable systems, automate the boring stuff, and write about what I learn along the way.',
-  website: 'https://shoutsky.dev/',
+  description: 'Platform engineer. I build reliable systems, and automate the boring stuff.',
+  website: 'https://skylarhoughtongithub.com/',
   lang: 'en',
   base: '/',
   author: 'Skylar Houghton',
@@ -50,16 +37,15 @@ export const SOCIAL_LINKS: SocialLink[] = [
     name: 'github',
     url: 'https://github.com/SkylarHoughtonGithub',
     icon: 'icon-[ri--github-fill]',
-    count: 20,
   },
   {
     name: 'email',
-    url: 'mailto:skylarhoughton1996@gmail.com',
+    url: 'mailto:skylarhoughtongithub@gmail.com',
     icon: 'icon-[ri--mail-fill]',
   },
   {
     name: 'linkedin',
-    url: 'https://linkedin.com/in/', // TODO: add your LinkedIn slug
+    url: 'https://www.linkedin.com/in/skylarhoughton',
     icon: 'icon-[ri--linkedin-fill]',
   },
 ]
@@ -92,6 +78,11 @@ export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
           url: 'https://www.gnu.org/software/bash/',
         },
         {
+          name: 'Git',
+          icon: 'icon-[skill-icons--git]',
+          url: 'https://git-scm.com/',
+        },
+        {
           name: 'TypeScript',
           icon: 'icon-[skill-icons--typescript]',
           url: 'https://www.typescriptlang.org/',
@@ -100,11 +91,6 @@ export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
           name: 'Task',
           icon: 'icon-[simple-icons--task]',
           url: 'https://taskfile.dev/',
-        },
-        {
-          name: 'Ansible',
-          icon: 'icon-[skill-icons--ansible]',
-          url: 'https://www.ansible.com/',
         },
         {
           name: 'Terraform',
@@ -127,13 +113,18 @@ export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
           url: 'https://docker.com/',
         },
         {
+          name: 'FluxCD',
+          icon: 'icon-[logos--flux]',
+          url: 'https://fluxcd.io/',
+        },
+        {
           name: 'Kubernetes',
           icon: 'icon-[skill-icons--kubernetes]',
           url: 'https://kubernetes.io/',
         },
         {
           name: 'Crossplane',
-          icon: 'icon-[simple-icons--crossplane]',
+          icon: 'icon-[logos--crossplane]',
           url: 'https://crossplane.io/',
         },
         {
@@ -142,9 +133,14 @@ export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
           url: 'https://www.postgresql.org/',
         },
         {
-          name: 'Git',
-          icon: 'icon-[skill-icons--git]',
-          url: 'https://git-scm.com/',
+          name: 'GitLab',
+          icon: 'icon-[logos--gitlab]',
+          url: 'https://about.gitlab.com/',
+        },
+        {
+          name: 'Backstage',
+          icon: 'icon-[simple-icons--backstage]',
+          url: 'https://backstage.io/',
         },
         {
           name: 'AWS',
@@ -162,6 +158,21 @@ export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
           url: 'https://github.com/features/actions',
         },
         {
+          name: 'GCP',
+          icon: 'icon-[skill-icons--gcp-dark]',
+          url: 'https://cloud.google.com/',
+        },
+        {
+          name: 'ArgoCD',
+          icon: 'icon-[logos--argo]',
+          url: 'https://argo-cd.readthedocs.io/en/stable/',
+        },
+        {
+          name: 'Helm',
+          icon: 'icon-[logos--helm]',
+          url: 'https://helm.sh/',
+        },
+        {
           name: 'Redis',
           icon: 'icon-[skill-icons--redis-dark]',
           url: 'https://redis.io/',
@@ -172,113 +183,17 @@ export const SKILLSSHOWCASE_CONFIG: SkillsShowcaseConfig = {
           url: 'https://nginx.org/',
         },
         {
-          name: 'VS Code',
-          icon: 'icon-[skill-icons--vscode-dark]',
-          url: 'https://code.visualstudio.com/',
-        },
-        {
-          name: 'Astro',
-          icon: 'icon-[skill-icons--astro]',
-          url: 'https://astro.build/',
-        },
-        {
-          name: 'Vercel',
-          icon: 'icon-[skill-icons--vercel-dark]',
-          url: 'https://vercel.com/',
+          name: 'Ansible',
+          icon: 'icon-[skill-icons--ansible]',
+          url: 'https://www.ansible.com/',
         },
       ],
     },
   ],
 }
 
-/**
- * GitHub contributions widget configuration
- * @property {boolean} ENABLED - show the GitHub contributions graph
- * @property {string} GITHUB_USERNAME - your GitHub username
- * @property {boolean} TOOLTIP_ENABLED - show per-day tooltips on hover
- */
-export const GITHUB_CONFIG: GithubConfig = {
-  ENABLED: true,
-  GITHUB_USERNAME: 'SkylarHoughtonGithub',
-  TOOLTIP_ENABLED: true,
-}
-
-//--- Posts Page Config ---
-export const POSTS_CONFIG: PostConfig = {
-  title: 'Posts',
-  description: 'Writing by Skylar Houghton',
-  introduce: 'Notes on systems, automation, and the things I figure out the hard way.',
-  author: 'Skylar Houghton',
-  homePageConfig: {
-    size: 2,
-    type: 'compact',
-  },
-  postPageConfig: {
-    size: 10,
-    type: 'image',
-    coverLayout: 'right',
-  },
-  tagsPageConfig: {
-    size: 10,
-    type: 'time-line',
-  },
-  ogImageUseCover: false,
-  postType: 'metaOnly',
-  imageDarkenInDark: true,
-  readMoreText: 'Read more',
-  prevPageText: 'Previous',
-  nextPageText: 'Next',
-  tocText: 'On this page',
-  backToPostsText: 'Back to Posts',
-  nextPostText: 'Next Post',
-  prevPostText: 'Previous Post',
-  recommendText: 'REC',
-  wordCountView: true,
-}
-
-export const COMMENT_CONFIG: CommentConfig = {
-  enabled: false,
-  system: 'gitalk',
-  gitalk: {
-    clientID: import.meta.env.PUBLIC_GITHUB_CLIENT_ID,
-    clientSecret: import.meta.env.PUBLIC_GITHUB_CLIENT_SECRET,
-    repo: 'portfolio-comments',
-    owner: 'SkylarHoughtonGithub',
-    admin: ['SkylarHoughtonGithub'],
-    language: 'en-US',
-    perPage: 5,
-    pagerDirection: 'last',
-    createIssueManually: false,
-    distractionFreeMode: false,
-    enableHotKey: true,
-  },
-}
-
-export const TAGS_CONFIG: TagsConfig = {
-  title: 'Tags',
-  description: 'All post tags',
-  introduce: 'Browse posts by topic.',
-}
-
 export const PROJECTS_CONFIG: ProjectConfig = {
   title: 'Projects',
   description: 'Things I have built.',
-  introduce: 'A selection of projects — click any card to read more.',
-}
-
-export const PHOTOS_CONFIG: PhotosConfig = {
-  title: 'Photos',
-  description: 'Photos from daily life.',
-  introduce: 'Photos from daily life.',
-}
-
-export const ANALYTICS_CONFIG: AnalyticsConfig = {
-  vercount: {
-    enabled: false,
-  },
-  umami: {
-    enabled: false,
-    websiteId: 'Your websiteId in umami',
-    serverUrl: 'https://cloud.umami.is/script.js',
-  },
+  introduce: 'A selection of projects. Click any card to read more.',
 }

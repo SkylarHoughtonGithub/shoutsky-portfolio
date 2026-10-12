@@ -1,20 +1,19 @@
-@import 'medium-zoom/dist/style.css';
 @import 'rehype-callouts/theme/vitepress';
 @import url('https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css');
 
 /* ===== CSS Custom Properties (Modern Design) ===== */
 :root {
   /* Colour system — syncs with portfolio design tokens */
-  --color-text-primary:    light-dark(#13221a, #e4f2e9);
-  --color-text-secondary:  light-dark(#4f6658, #8aa595);
-  --color-text-muted:      light-dark(#4f6658, #8aa595);
-  --color-heading:         light-dark(#13221a, #e4f2e9);
-  --color-link:            light-dark(#15803d, #4ade80);
-  --color-link-hover:      light-dark(#0f766e, #5eead4);
-  --color-anchor:          light-dark(#15803d, #4ade80);
+  --color-text-primary: light-dark(#13221a, #e4f2e9);
+  --color-text-secondary: light-dark(#4f6658, #8aa595);
+  --color-text-muted: light-dark(#4f6658, #8aa595);
+  --color-heading: light-dark(#13221a, #e4f2e9);
+  --color-link: light-dark(#15803d, #4ade80);
+  --color-link-hover: light-dark(#0f766e, #5eead4);
+  --color-anchor: light-dark(#15803d, #4ade80);
 
   /* Background colours */
-  --color-bg-inline-code:   light-dark(#e3f0e8, #0f1c14);
+  --color-bg-inline-code: light-dark(#e3f0e8, #0f1c14);
   --color-text-inline-code: light-dark(#13221a, #6ee7a0);
   --color-bg-polaroid: #ffffff;
 
