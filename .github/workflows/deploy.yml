@@ -35,12 +35,6 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Format check
-        run: pnpm format
-
-      - name: Type-check
-        run: pnpm astro check
-
       - name: Build
         run: pnpm astro build
 

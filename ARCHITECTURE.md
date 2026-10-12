@@ -127,7 +127,14 @@ Expressive Code emits per-span inline styles like `style="--0:#E4F2E9;--1:#0A151
 - `task clean` — `rm -rf dist .astro node_modules/.astro node_modules/.vite`
 - `task reinstall` — nuke + `pnpm install`
 
-Prettier config is `.prettierrc` with `prettier-plugin-astro`. CI runs `format → check → build` and will fail on any one.
+Prettier config is `.prettierrc` with `prettier-plugin-astro`.
+
+CI is split by lifecycle stage:
+
+- **`.github/workflows/ci.yml`** — runs on PRs and pushes to any branch except `main`. Does `pnpm install → format → astro check`. Validation gate before merge.
+- **`.github/workflows/deploy.yml`** — runs on push to `main` (or manual `workflow_dispatch`). Does `pnpm install → astro build → upload-pages-artifact → deploy-pages`. No format or check — those already passed on the PR, no need to re-run.
+
+Direct pushes to `main` (bypassing a PR) therefore skip validation. Use the PR flow for anything non-trivial.
 
 ---
 
