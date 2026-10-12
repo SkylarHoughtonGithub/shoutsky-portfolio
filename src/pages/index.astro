@@ -1,0 +1,67 @@
+---
+import { SITE, SKILLSSHOWCASE_CONFIG, SOCIAL_LINKS } from '~/config.ts'
+import Layout from '~/layouts/Layout.astro'
+import SectionDivider from '~/components/base/SectionDivider.astro'
+import SocialLink from '~/components/base/SocialLink.astro'
+import SkillsShowcase from '~/components/base/SkillsShowcase.astro'
+import CommandDeck from '~/components/CommandDeck.astro'
+import FeaturedProjects from '~/components/FeaturedProjects.astro'
+import { getAllProjects } from '~/lib/data'
+
+const { SKILLS_ENABLED, SKILLS_DATA } = SKILLSSHOWCASE_CONFIG
+
+const featuredBlips = (await getAllProjects())
+  .filter((p) => p.data.featured)
+  .slice(0, 4)
+  .map((p) => ({
+    slug: p.id,
+    name: p.data.name,
+    description: p.data.description,
+    status: p.data.status,
+  }))
+---
+
+<Layout title={SITE.author} description={SITE.description}>
+  <div class="relative z-[1]">
+    <div class="py-8 pb-10 px-6 sm:px-8">
+      <h1 class="flex flex-col gap-2">
+        <span class="text-4xl sm:text-5xl tracking-tight">{SITE.author}</span>
+        <span class="text-muted-foreground font-light text-xl sm:text-2xl block tracking-wide text-balance">
+          {SITE.description}
+        </span>
+      </h1>
+      <div class="mt-6 flex gap-6">
+        {
+          SOCIAL_LINKS.map((item) => {
+            return <SocialLink href={item.url} icon={item.icon} aria-label={`${item.name} link`} />
+          })
+        }
+      </div>
+      <div class="mt-10">
+        <CommandDeck blips={featuredBlips} />
+      </div>
+    </div>
+
+    {
+      SKILLS_ENABLED && SKILLS_DATA.length > 0 && (
+        <>
+          <SectionDivider />
+          <div class="py-8 pb-10 px-6 max-md:px-6">
+            <div class="px-2 max-md:px-0">
+              <h2 class="text-2xl sm:text-3xl tracking-tight">Stack</h2>
+              <p class="text-muted-foreground mb-6 mt-1">Tap any tech to see the projects that use it.</p>
+            </div>
+            <SkillsShowcase skillsData={SKILLS_DATA} />
+          </div>
+        </>
+      )
+    }
+
+    <SectionDivider />
+    <div class="py-8 pb-10 px-6 sm:px-8">
+      <h2 class="text-2xl sm:text-3xl tracking-tight">Featured work</h2>
+      <p class="text-muted-foreground mb-6 mt-1">A few things I built end-to-end. Click through for the lessons-learned write-up.</p>
+      <FeaturedProjects />
+    </div>
+  </div>
+</Layout>

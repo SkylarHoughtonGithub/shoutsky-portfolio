@@ -1,0 +1,573 @@
+/* ===== Imports ===== */
+@import 'tailwindcss';
+@plugin "@tailwindcss/typography";
+@plugin "@iconify/tailwind4";
+
+/* ===== Dark Mode Configuration ===== */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ===== Theme Variables ===== */
+@theme {
+  --font-serif: var(--font-heading);
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-code);
+
+  --color-border: var(--line);
+  --color-ring: var(--neon);
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  --color-primary: var(--neon);
+  --color-primary-foreground: var(--bg);
+  --color-accent: var(--panel);
+  --color-accent-foreground: var(--text);
+  --color-muted: var(--panel);
+  --color-muted-foreground: var(--muted);
+  --color-tag-bg: var(--tag-bg);
+  --color-tag-bg-hover: var(--tag-bg-hover);
+  --color-tag-border: var(--tag-border);
+  --color-tag-text: var(--tag-text);
+  --color-scrollbar: var(--line);
+  --color-scrollbar-bg: var(--bg);
+}
+
+/* ===== Colour Variables ===== */
+@layer base {
+  :root {
+    /* --- fonts --- */
+    --font-heading: 'Chakra Petch', system-ui, sans-serif;
+    --font-body: 'IBM Plex Sans', system-ui, sans-serif;
+    --font-code: 'JetBrains Mono', 'Fira Code', monospace;
+
+    /* --- light palette --- */
+    --bg: #edf4ef;
+    --panel: #ffffff;
+    --line: #cddfd3;
+    --text: #13221a;
+    --muted: #4f6658;
+    --neon: #15803d;
+    --neon2: #0f766e;
+
+    /* --- light-mode sky gradient (dawn → pale mint) --- */
+    --sky-top: #cfe3ff;
+    --sky-bottom: #edf4ef;
+
+    /* --- sun (always warm; only shows in light mode) --- */
+    --sun-core: #fff8dc;
+    --sun-corona: #ffd98a;
+
+    /* --- terminal surface (light defaults; .dark overrides below) --- */
+    --term-bg: #f6f9f3;
+    --term-header: #e8efe8;
+    --term-border: #c7d7ca;
+    --term-text: #152319;
+    --term-muted: #566b5c;
+    --term-cmd: #0d7a3f;
+    --term-ok: #5a8a1a;
+
+    /* --- glow multiplier (subtle in light) --- */
+    --glow: 0.35;
+
+    /* --- tag system --- */
+    --tag-bg: #e3f0e8;
+    --tag-bg-hover: #d4e8db;
+    --tag-border: #cddfd3;
+    --tag-text: #4f6658;
+
+    /* --- layout --- */
+    --layout-width: 48rem;
+    --layout-half-width: calc(var(--layout-width) / 2);
+    --layout-change-width: 136rem;
+  }
+
+  @media (min-width: 136rem) {
+    :root {
+      --layout-width: 56rem;
+    }
+  }
+
+  .global-layout-width {
+    max-width: var(--layout-width);
+  }
+
+  /* --- dark palette --- */
+  .dark {
+    --bg: #000000;
+    --panel: #080f0b;
+    --line: #1e2e24;
+    --text: #e4f2e9;
+    --muted: #8aa595;
+    --neon: #4ade80;
+    --neon2: #5eead4;
+    --glow: 1;
+
+    --tag-bg: #0f1c14;
+    --tag-bg-hover: #162419;
+    --tag-border: #1e2e24;
+    --tag-text: #8aa595;
+
+    /* --- terminal surface overrides for dark mode --- */
+    --term-bg: #0c110e;
+    --term-header: #121a15;
+    --term-border: #1f2a23;
+    --term-text: #e4f2e9;
+    --term-muted: #8aa595;
+    --term-cmd: #6ee7a0;
+    --term-ok: #bef264;
+  }
+}
+
+/* ===== Base Styles ===== */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: light;
+    background: var(--color-background);
+    font-family: var(--font-body);
+    scroll-behavior: smooth;
+    @variant dark {
+      color-scheme: dark;
+    }
+  }
+
+  html:not(.dark) {
+    background: linear-gradient(to bottom, var(--sky-top), var(--sky-bottom)) fixed;
+  }
+
+  body {
+    @apply min-h-screen text-foreground;
+    background: transparent;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    @apply font-medium;
+  }
+
+  a {
+    @apply underline-offset-4;
+  }
+
+  .pro {
+    @apply prose prose-zinc dark:prose-invert;
+  }
+
+  /* Strip prose's literal backticks around inline code */
+  .pro :where(code):not(:where([class~='not-prose'] *))::before,
+  .pro :where(code):not(:where([class~='not-prose'] *))::after {
+    content: none;
+  }
+}
+
+/* ===== Animations ===== */
+@layer base {
+  .fade-up {
+    opacity: 0;
+    transform: translateY(2rem);
+    animation: fadeUp 0.6s forwards;
+    will-change: opacity, transform;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(2rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+  .animation-delay-150 {
+    animation-delay: 150ms;
+  }
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  html.disable-transition *:not(html) {
+    transition: none !important;
+  }
+
+  @supports (-webkit-hyphens: none) {
+    .safari-hidden {
+      display: none;
+    }
+  }
+}
+
+html.theme-transitioning {
+  view-transition-name: theme-transition !important;
+}
+
+::view-transition-old(theme-transition) {
+  animation: none !important;
+  mix-blend-mode: normal !important;
+  opacity: 1 !important;
+  z-index: 1 !important;
+}
+
+html.theme-to-dark::view-transition-new(theme-transition) {
+  animation: 600ms cubic-bezier(0.4, 0, 0.2, 1) theme-reveal-down !important;
+  mix-blend-mode: normal !important;
+  z-index: 9999 !important;
+}
+
+html.theme-to-light::view-transition-new(theme-transition) {
+  animation: 600ms cubic-bezier(0.4, 0, 0.2, 1) theme-reveal-up !important;
+  mix-blend-mode: normal !important;
+  z-index: 9999 !important;
+}
+
+@keyframes theme-reveal-down {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0% 0);
+  }
+}
+
+@keyframes theme-reveal-up {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0% 0 0 0);
+  }
+}
+
+/* ===== Scrollbar Styles ===== */
+@supports (scrollbar-width: thin) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--line) 40%, transparent) transparent;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, var(--line) 40%, transparent);
+  border-radius: 20px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  transition: background-color 0.2s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--line) 80%, transparent);
+}
+
+pre::-webkit-scrollbar-thumb {
+  background-color: color-mix(in srgb, var(--text) 20%, transparent);
+}
+pre::-webkit-scrollbar-thumb:hover {
+  background-color: color-mix(in srgb, var(--text) 40%, transparent);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== Search Styles ===== */
+#search-input::-webkit-search-decoration,
+#search-input::-webkit-search-cancel-button,
+#search-input::-webkit-search-results-button,
+#search-input::-webkit-search-results-decoration {
+  -webkit-appearance: none;
+}
+
+#search-input::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+input[type='search']::-moz-search-cancel-button {
+  display: none;
+}
+
+#search-results {
+  padding: 0.25rem;
+}
+
+.search-results-item {
+  display: block;
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  transition:
+    background-color 0.18s ease,
+    transform 0.12s ease,
+    color 0.18s ease;
+}
+
+.search-results-item:not(.sub-result) + .search-results-item:not(.sub-result) {
+  margin-top: 0.375rem;
+}
+.search-results-item.sub-result + .search-results-item:not(.sub-result) {
+  margin-top: 0.5rem;
+}
+
+.search-results-item:hover {
+  background-color: color-mix(in srgb, var(--panel) 60%, transparent);
+}
+
+.search-results-item:focus-visible {
+  outline: 2px solid var(--neon);
+  outline-offset: 2px;
+  background-color: color-mix(in srgb, var(--panel) 70%, transparent);
+}
+
+.search-results-item:active {
+  transform: scale(0.997);
+}
+
+.search-results-item.sub-result {
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--panel);
+  margin-left: 0.75rem;
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+.search-results-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.375rem;
+  display: -webkit-box;
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.search-results-item:hover .search-results-title {
+  color: var(--neon);
+}
+
+.search-results-item.sub-result .search-results-title {
+  font-weight: 500;
+  font-size: 0.9375rem;
+}
+
+.search-results-excerpt {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.6;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.search-results-excerpt mark {
+  background-color: var(--panel);
+  color: var(--text);
+  padding: 0.1em 0.25em;
+  border-radius: 0.25em;
+  font-weight: 600;
+}
+
+.search-panel-show {
+  animation: searchPanelShow 0.3s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+}
+
+@keyframes searchPanelShow {
+  0% {
+    opacity: 0;
+    transform: translate(0%, -2rem);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(0%, 0);
+  }
+}
+
+/* ===== Utilities ===== */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+@keyframes slide-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.3s ease-out forwards;
+}
+
+/* ===== Neon Glow Helper ===== */
+.neon-glow {
+  box-shadow: 0 0 calc(20px * var(--glow)) color-mix(in srgb, var(--neon) 60%, transparent);
+}
+
+.neon-text-glow {
+  text-shadow: 0 0 calc(16px * var(--glow)) color-mix(in srgb, var(--neon) 80%, transparent);
+}
+
+/* ===== Project Card ===== */
+.project-card {
+  display: block;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease,
+    opacity 0.3s ease,
+    filter 0.3s ease;
+}
+
+.project-card:hover,
+.project-card:focus-visible {
+  border-color: color-mix(in srgb, var(--neon) 35%, transparent);
+  box-shadow:
+    0 0 calc(24px * var(--glow)) color-mix(in srgb, var(--neon) 45%, transparent),
+    inset 0 0 0 1px color-mix(in srgb, var(--neon) 25%, transparent);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.project-card.filtered-out {
+  opacity: 0.3;
+  filter: saturate(0.3);
+}
+
+.project-card.filtered-out:hover,
+.project-card.filtered-out:focus-visible {
+  opacity: 0.7;
+  filter: saturate(0.7);
+}
+
+/* ===== Projects filter banner ===== */
+.filter-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  padding: 0.6rem 0.9rem;
+  margin: 0 0 1rem;
+  border: 1px solid color-mix(in srgb, var(--neon) 30%, transparent);
+  border-radius: 0.4rem;
+  background: color-mix(in srgb, var(--neon) 6%, var(--panel));
+  box-shadow: 0 0 calc(16px * var(--glow)) color-mix(in srgb, var(--neon) 18%, transparent);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}
+
+.filter-banner-label {
+  color: var(--muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+}
+
+.filter-banner-tag {
+  color: var(--neon);
+  text-shadow: 0 0 calc(10px * var(--glow)) color-mix(in srgb, var(--neon) 60%, transparent);
+  letter-spacing: 0.06em;
+}
+
+.filter-banner-count {
+  color: var(--muted);
+  font-size: 0.7rem;
+  margin-left: auto;
+}
+
+.filter-clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 0.3rem;
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.filter-clear:hover,
+.filter-clear:focus-visible {
+  color: var(--neon2);
+  border-color: color-mix(in srgb, var(--neon) 45%, transparent);
+  box-shadow: 0 0 calc(10px * var(--glow)) color-mix(in srgb, var(--neon) 40%, transparent);
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    transition: none;
+  }
+  .project-card:hover,
+  .project-card:focus-visible {
+    transform: none;
+  }
+}
+
+/* ===== Code Block Frames (terminal bay look) ===== */
+.expressive-code .frame {
+  border: 1px solid var(--term-border);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0 calc(12px * var(--glow)) color-mix(in srgb, var(--neon) 18%, transparent);
+}
+
+/* ===== Heading Anchor Links ===== */
+.header-anchor {
+  margin-left: 0.4em;
+  color: var(--neon);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  font-weight: 400;
+}
+
+h1:hover > .header-anchor,
+h2:hover > .header-anchor,
+h3:hover > .header-anchor,
+h4:hover > .header-anchor,
+h5:hover > .header-anchor,
+h6:hover > .header-anchor,
+.header-anchor:focus-visible {
+  opacity: 1;
+}

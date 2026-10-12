@@ -1,0 +1,50 @@
+version: '3'
+
+tasks:
+  default:
+    desc: List available tasks
+    cmds:
+      - task --list
+
+  dev:
+    desc: Start the local dev server on :4321
+    cmds:
+      - pnpm dev
+
+  build:
+    desc: Type-check and build to dist/
+    cmds:
+      - pnpm astro check
+      - pnpm astro build
+
+  preview:
+    desc: Serve the production build locally
+    deps: [build]
+    cmds:
+      - pnpm astro preview
+
+  check:
+    desc: Astro content schema + TypeScript validation
+    cmds:
+      - pnpm astro check
+
+  format:
+    desc: Check code formatting
+    cmds:
+      - pnpm format
+
+  format:write:
+    desc: Rewrite files with Prettier
+    cmds:
+      - pnpm format:write
+
+  clean:
+    desc: Remove build output and caches
+    cmds:
+      - rm -rf dist .astro node_modules/.astro node_modules/.vite
+
+  reinstall:
+    desc: Nuke node_modules + caches, reinstall
+    cmds:
+      - rm -rf node_modules .astro
+      - pnpm install

@@ -1,0 +1,53 @@
+---
+name: 'tack-ai'
+description: 'A policy-governed coding agent with a tamper-evident audit trail. Every tool call authorized, every decision auditable, every run cost-tracked.'
+githubUrl: 'https://github.com/SkylarHoughtonGithub/tack-ai'
+type: 'text'
+tags: ['Python', 'PostgreSQL', 'Docker', 'GitHub Actions', 'Task']
+featured: true
+date: 2026-10-01
+status: 'in-progress'
+---
+
+## The problem
+
+AI coding agents are opaque black boxes. In regulated or compliance-sensitive environments, that's a non-starter: you can't ship an agent that calls arbitrary tools, hits arbitrary APIs, and incurs arbitrary cost with no way to answer "who authorized that, when, and why."
+
+## What I built
+
+A coding agent framework where every tool call passes through a policy engine before execution, every decision is captured in a hash-chained append-only Postgres table, and every run's cost is tracked and enforced. The workflow is a `pydantic_graph` state machine — Plan → Edit → Test → Gate — with up to three retry iterations and a human-in-the-loop approval queue for gray-area decisions.
+
+Key pieces:
+
+- **Policy** — Cedar (default) or OPA. Each tool call gets `allow`, `deny`, or `require_approval`. Fail-closed.
+- **Audit** — hash-chained Postgres rows with secret redaction. Tamper-evident by construction.
+- **Memory** — rolling conversation summaries + pgvector semantic search over code and docs.
+- **Routing** — simple/general/deep reasoning tiers; Anthropic and OpenAI as equal first-class providers.
+- **Observability** — structlog, Prometheus, OpenTelemetry, Logfire.
+
+## A decision I'd defend
+
+I made Cedar the default policy engine instead of OPA, even though OPA is more established in the infra world. Cedar's authorization semantics map cleanly onto what a tool call actually needs: an `allow`/`deny`/`require_approval` decision for a `principal` acting on a `resource`. Rego is more flexible but you end up re-inventing that decision shape anyway. I kept OPA pluggable for routing and budget rules where Rego's expressiveness genuinely helps.
+
+```python
+# a cedar policy decision at the tool-call boundary
+decision = policy_engine.authorize(
+    principal=f'User::"{run.user_id}"',
+    action=f'Action::"{tool_call.name}"',
+    resource=tool_call.target_resource(),
+    context={"budget_remaining_cents": run.budget_remaining},
+)
+
+match decision:
+    case Allow():
+        return await execute_tool(tool_call)
+    case Deny(reason):
+        await audit.log_denied(tool_call, reason)
+        raise PolicyDenied(reason)
+    case RequireApproval(ttl):
+        return await approval_queue.enqueue(tool_call, ttl=ttl)
+```
+
+## Where it stands
+
+The core workflow, policy integration, audit chain, and web console are working end-to-end. The next milestone is a hardening pass on the approval UI and a real pilot run against a compliance-sensitive workload.

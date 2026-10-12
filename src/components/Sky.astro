@@ -1,0 +1,416 @@
+---
+
+---
+
+<canvas class="sky-canvas" aria-hidden="true" data-sky></canvas>
+
+<div class="sky-body" aria-hidden="true">
+  <svg class="planet" viewBox="-400 -400 800 800" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <defs>
+      <radialGradient id="planet-body" cx="32%" cy="28%" r="92%">
+        <stop offset="0%" stop-color="hsl(140, 65%, 60%)"></stop>
+        <stop offset="38%" stop-color="hsl(142, 55%, 40%)"></stop>
+        <stop offset="72%" stop-color="hsl(148, 60%, 20%)"></stop>
+        <stop offset="100%" stop-color="hsl(152, 65%, 6%)"></stop>
+      </radialGradient>
+
+      <radialGradient id="planet-shadow" cx="32%" cy="28%" r="95%">
+        <stop offset="0%" stop-color="rgba(0,0,0,0)"></stop>
+        <stop offset="55%" stop-color="rgba(0,0,0,0.12)"></stop>
+        <stop offset="100%" stop-color="rgba(0,0,0,0.82)"></stop>
+      </radialGradient>
+
+      <filter id="planet-clouds" x="-10%" y="-10%" width="120%" height="120%">
+        <!-- Base landmass shapes -->
+        <feTurbulence type="fractalNoise" baseFrequency="0.009" numOctaves="4" seed="11" result="landNoise"></feTurbulence>
+        <!-- Threshold noise into binary continents via discrete alpha steps -->
+        <feComponentTransfer in="landNoise" result="land">
+          <feFuncA type="discrete" tableValues="0 0 0 0 0 0.35 0.7 0.9 1 1"></feFuncA>
+        </feComponentTransfer>
+        <feColorMatrix
+          in="land"
+          type="matrix"
+          values="
+          0 0 0 0 0.9
+          0 0 0 0 1
+          0 0 0 0 0.93
+          0 0 0 1 0"
+          result="landColored"></feColorMatrix>
+        <!-- Finer detail: coastline flecks + inland texture -->
+        <feTurbulence type="fractalNoise" baseFrequency="0.055" numOctaves="2" seed="23" result="detail"></feTurbulence>
+        <feComponentTransfer in="detail" result="detailStepped">
+          <feFuncA type="discrete" tableValues="0 0 0 0.4 0.8 1"></feFuncA>
+        </feComponentTransfer>
+        <feColorMatrix
+          in="detailStepped"
+          type="matrix"
+          values="
+          0 0 0 0 0.78
+          0 0 0 0 0.95
+          0 0 0 0 0.82
+          0 0 0 0.5 0"
+          result="detailColored"></feColorMatrix>
+        <feComposite in="detailColored" in2="landColored" operator="in" result="detailMasked"></feComposite>
+        <feMerge>
+          <feMergeNode in="landColored"></feMergeNode>
+          <feMergeNode in="detailMasked"></feMergeNode>
+        </feMerge>
+      </filter>
+
+      <clipPath id="planet-clip"><circle r="140"></circle></clipPath>
+    </defs>
+
+    <!-- Back halves of rings -->
+    <g transform="rotate(-18)" fill="none">
+      <path d="M -170 0 A 170 34 0 0 0 170 0" stroke="hsl(140,60%,55%)" stroke-width="1.5" opacity="0.55"></path>
+      <path d="M -195 0 A 195 40 0 0 0 195 0" stroke="hsl(140,65%,62%)" stroke-width="2.5" opacity="0.78"></path>
+      <path d="M -215 0 A 215 44 0 0 0 215 0" stroke="hsl(140,55%,38%)" stroke-width="1" opacity="0.5"></path>
+      <path d="M -238 0 A 238 48 0 0 0 238 0" stroke="hsl(140,65%,58%)" stroke-width="2" opacity="0.68"></path>
+      <path d="M -262 0 A 262 54 0 0 0 262 0" stroke="hsl(140,50%,35%)" stroke-width="1" opacity="0.42"></path>
+      <path d="M -288 0 A 288 59 0 0 0 288 0" stroke="hsl(140,60%,50%)" stroke-width="1.5" opacity="0.55"></path>
+      <path d="M -312 0 A 312 64 0 0 0 312 0" stroke="hsl(140,55%,42%)" stroke-width="1" opacity="0.4"></path>
+      <path d="M -340 0 A 340 70 0 0 0 340 0" stroke="hsl(140,50%,38%)" stroke-width="1" opacity="0.3"></path>
+    </g>
+
+    <!-- Planet body (rotates when spin is on) -->
+    <g class="planet-rotator">
+      <g clip-path="url(#planet-clip)">
+        <circle r="140" fill="url(#planet-body)"></circle>
+        <rect x="-140" y="-140" width="280" height="280" filter="url(#planet-clouds)" opacity="0.85"></rect>
+        <circle r="140" fill="url(#planet-shadow)"></circle>
+      </g>
+    </g>
+
+    <!-- Front halves of rings -->
+    <g transform="rotate(-18)" fill="none">
+      <path d="M -170 0 A 170 34 0 0 1 170 0" stroke="hsl(140,60%,55%)" stroke-width="1.5" opacity="0.55"></path>
+      <path d="M -195 0 A 195 40 0 0 1 195 0" stroke="hsl(140,65%,62%)" stroke-width="2.5" opacity="0.78"></path>
+      <path d="M -215 0 A 215 44 0 0 1 215 0" stroke="hsl(140,55%,38%)" stroke-width="1" opacity="0.5"></path>
+      <path d="M -238 0 A 238 48 0 0 1 238 0" stroke="hsl(140,65%,58%)" stroke-width="2" opacity="0.68"></path>
+      <path d="M -262 0 A 262 54 0 0 1 262 0" stroke="hsl(140,50%,35%)" stroke-width="1" opacity="0.42"></path>
+      <path d="M -288 0 A 288 59 0 0 1 288 0" stroke="hsl(140,60%,50%)" stroke-width="1.5" opacity="0.55"></path>
+      <path d="M -312 0 A 312 64 0 0 1 312 0" stroke="hsl(140,55%,42%)" stroke-width="1" opacity="0.4"></path>
+      <path d="M -340 0 A 340 70 0 0 1 340 0" stroke="hsl(140,50%,38%)" stroke-width="1" opacity="0.3"></path>
+    </g>
+  </svg>
+
+  <div class="sun">
+    <div class="sun-corona"></div>
+    <div class="sun-core"></div>
+  </div>
+</div>
+
+<script>
+  type Star = {
+    x: number
+    y: number
+    depth: number
+    size: number
+    phase: number
+    hue: number
+  }
+
+  type SkyInstance = { cleanup: () => void }
+
+  const STAR_DENSITY = 0.00016
+  const PLANET_GRAD_CX = 32
+  const PLANET_GRAD_CY = 28
+
+  const bootSky = (): SkyInstance | null => {
+    const canvas = document.querySelector<HTMLCanvasElement>('[data-sky]')
+    if (!canvas) return null
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return null
+    const planetBodyGrad = document.querySelector<SVGElement>('#planet-body')
+    const planetShadowGrad = document.querySelector<SVGElement>('#planet-shadow')
+    const root = document.documentElement
+
+    let stars: Star[] = []
+    let dpr = Math.min(window.devicePixelRatio || 1, 2)
+    let w = 0
+    let h = 0
+    let rafId: number | null = null
+    let visible = !document.hidden
+    const reducedMq = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    let pointerX = 0
+    let pointerY = 0
+    let targetX = 0
+    let targetY = 0
+    let scrollY = window.scrollY
+
+    const seed = () => {
+      const count = Math.round(w * h * STAR_DENSITY)
+      stars = []
+      for (let i = 0; i < count; i++) {
+        const depth = Math.random()
+        stars.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          depth,
+          size: 0.4 + depth * 1.7,
+          phase: Math.random() * Math.PI * 2,
+          hue: Math.random() < 0.08 ? 150 : Math.random() < 0.3 ? 180 : -1,
+        })
+      }
+    }
+
+    const resize = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2)
+      w = window.innerWidth
+      h = window.innerHeight
+      canvas.width = Math.round(w * dpr)
+      canvas.height = Math.round(h * dpr)
+      canvas.style.width = w + 'px'
+      canvas.style.height = h + 'px'
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      seed()
+    }
+
+    const paint = (t: number) => {
+      ctx.clearRect(0, 0, w, h)
+      for (const s of stars) {
+        const twinkle = 0.55 + 0.45 * Math.sin(t * 0.00065 + s.phase)
+        const alpha = (0.45 + s.depth * 0.55) * twinkle
+        const offX = pointerX * (2 + s.depth * 14)
+        const offY = pointerY * (2 + s.depth * 14) + scrollY * -0.05 * s.depth
+        const color = s.hue < 0 ? `hsla(0, 0%, 100%, ${alpha})` : `hsla(${s.hue}, 75%, 82%, ${alpha})`
+        ctx.beginPath()
+        ctx.fillStyle = color
+        ctx.arc(s.x + offX, s.y + offY, s.size, 0, Math.PI * 2)
+        ctx.fill()
+      }
+    }
+
+    const syncCssVars = () => {
+      root.style.setProperty('--sky-pointer-x', pointerX.toFixed(3))
+      root.style.setProperty('--sky-pointer-y', pointerY.toFixed(3))
+      root.style.setProperty('--sky-scroll-y', scrollY.toFixed(0))
+    }
+
+    const syncPlanetLitSide = () => {
+      if (!planetBodyGrad || !planetShadowGrad) return
+      // Lit side follows pointer: pointer right (+x) → highlight shifts right
+      const cx = (PLANET_GRAD_CX + pointerX * 10).toFixed(1) + '%'
+      const cy = (PLANET_GRAD_CY + pointerY * 10).toFixed(1) + '%'
+      planetBodyGrad.setAttribute('cx', cx)
+      planetBodyGrad.setAttribute('cy', cy)
+      planetShadowGrad.setAttribute('cx', cx)
+      planetShadowGrad.setAttribute('cy', cy)
+    }
+
+    const loop = (t: number) => {
+      if (!visible) {
+        rafId = null
+        return
+      }
+      pointerX += (targetX - pointerX) * 0.08
+      pointerY += (targetY - pointerY) * 0.08
+      syncCssVars()
+      syncPlanetLitSide()
+      paint(t)
+      rafId = requestAnimationFrame(loop)
+    }
+
+    const start = () => {
+      if (rafId == null && visible && !reducedMq.matches) {
+        rafId = requestAnimationFrame(loop)
+      }
+    }
+
+    const stop = () => {
+      if (rafId != null) {
+        cancelAnimationFrame(rafId)
+        rafId = null
+      }
+    }
+
+    const applyReducedMotion = () => {
+      stop()
+      if (reducedMq.matches) {
+        pointerX = pointerY = targetX = targetY = 0
+        syncCssVars()
+        syncPlanetLitSide()
+        paint(0)
+      } else {
+        start()
+      }
+    }
+
+    const onResize = () => {
+      resize()
+      applyReducedMotion()
+    }
+
+    const onVisibility = () => {
+      visible = !document.hidden
+      if (visible) start()
+      else stop()
+    }
+
+    const onPointer = (e: PointerEvent | MouseEvent) => {
+      if (reducedMq.matches || root.classList.contains('sky-cursor-off')) {
+        targetX = 0
+        targetY = 0
+        return
+      }
+      targetX = (e.clientX / window.innerWidth - 0.5) * 2
+      targetY = (e.clientY / window.innerHeight - 0.5) * 2
+    }
+
+    const onScroll = () => {
+      scrollY = window.scrollY
+    }
+
+    resize()
+    applyReducedMotion()
+
+    window.addEventListener('resize', onResize)
+    reducedMq.addEventListener('change', applyReducedMotion)
+    document.addEventListener('visibilitychange', onVisibility)
+    window.addEventListener('pointermove', onPointer, { passive: true })
+    window.addEventListener('scroll', onScroll, { passive: true })
+
+    return {
+      cleanup: () => {
+        stop()
+        window.removeEventListener('resize', onResize)
+        reducedMq.removeEventListener('change', applyReducedMotion)
+        document.removeEventListener('visibilitychange', onVisibility)
+        window.removeEventListener('pointermove', onPointer)
+        window.removeEventListener('scroll', onScroll)
+      },
+    }
+  }
+
+  let current: SkyInstance | null = null
+  const relaunch = () => {
+    current?.cleanup()
+    current = bootSky()
+  }
+
+  relaunch()
+  document.addEventListener('astro:page-load', relaunch)
+  document.addEventListener('astro:before-swap', () => current?.cleanup())
+</script>
+
+<style>
+  .sky-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    display: block;
+  }
+
+  html:not(.dark) .sky-canvas,
+  html.sky-stars-off .sky-canvas {
+    display: none;
+  }
+
+  .planet-rotator {
+    transform-origin: 0 0;
+    animation: planet-spin 180s linear infinite;
+  }
+
+  @keyframes planet-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  html.sky-spin-off .planet-rotator {
+    animation: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .planet-rotator {
+      animation: none;
+    }
+  }
+
+  .sky-body {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  /* ===== Planet (dark mode) ===== */
+  .planet {
+    position: absolute;
+    width: clamp(20rem, 60vw, 52rem);
+    aspect-ratio: 1;
+    top: clamp(-14rem, -17vw, -10rem);
+    right: clamp(-10rem, -15vw, -8rem);
+    overflow: visible;
+    filter: drop-shadow(0 0 calc(28px * var(--glow)) color-mix(in srgb, var(--neon) 20%, transparent));
+    will-change: transform;
+    transform: translate3d(
+      calc(var(--sky-pointer-x, 0) * 24px),
+      calc(var(--sky-pointer-y, 0) * 24px + var(--sky-scroll-y, 0) * -0.35px),
+      0
+    );
+  }
+
+  html:not(.dark) .planet {
+    display: none;
+  }
+
+  /* ===== Sun (light mode) ===== */
+  .sun {
+    position: absolute;
+    width: clamp(18rem, 48vw, 40rem);
+    aspect-ratio: 1;
+    top: clamp(1rem, 2vw, 4rem);
+    right: clamp(-4rem, -2vw, 4rem);
+    display: grid;
+    place-items: center;
+    will-change: transform;
+    transform: translate3d(
+      calc(var(--sky-pointer-x, 0) * 14px),
+      calc(var(--sky-pointer-y, 0) * 14px + var(--sky-scroll-y, 0) * -0.28px),
+      0
+    );
+  }
+
+  html.dark .sun {
+    display: none;
+  }
+
+  .sun-corona {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at 50% 50%,
+      color-mix(in srgb, var(--sun-corona) 55%, transparent) 8%,
+      color-mix(in srgb, var(--sun-corona) 30%, transparent) 28%,
+      color-mix(in srgb, var(--sun-corona) 12%, transparent) 50%,
+      transparent 72%
+    );
+    filter: blur(1px);
+  }
+
+  .sun-core {
+    position: relative;
+    width: 48%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle at calc(50% + var(--sky-pointer-x, 0) * 6%) calc(45% + var(--sky-pointer-y, 0) * 6%),
+      #ffffff 0%,
+      var(--sun-core) 25%,
+      color-mix(in srgb, var(--sun-core) 55%, var(--sun-corona)) 60%,
+      var(--sun-corona) 90%,
+      color-mix(in srgb, var(--sun-corona) 50%, transparent) 100%
+    );
+    box-shadow:
+      0 0 50px color-mix(in srgb, var(--sun-core) 70%, transparent),
+      0 0 120px color-mix(in srgb, var(--sun-corona) 65%, transparent),
+      0 0 240px color-mix(in srgb, var(--sun-corona) 35%, transparent);
+  }
+</style>
